@@ -136,7 +136,7 @@ export function Navbar3() {
               initial="close"
               exit="close"
               animate={useActive.animateDropdownMenu}
-              className="bg-scheme-background lg:absolute lg:z-dropdown lg:border lg:border-scheme-border lg:p-2 lg:[--y-close:25%]"
+              className="bg-scheme-background lg:absolute lg:z-dropdown lg:rounded-card lg:border lg:border-scheme-border lg:p-2 lg:shadow-lg lg:[--y-close:25%]"
             >
               <Link href="/community" className={DROPDOWN_LINK}>
                 コミュニティ

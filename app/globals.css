@@ -151,6 +151,16 @@
   --color-hopbush-darker: #4e2541;
   --color-hopbush-darkest: #3b1b30;
 
+  /* Scheme color roles — registered here so Tailwind generates the
+     `bg-scheme-*` / `text-scheme-*` / `border-scheme-*` utilities. The
+     scheme-1/2/3 utilities override these custom properties at runtime,
+     so each utility resolves to the active section's scheme value. */
+  --color-scheme-background: var(--color-white);
+  --color-scheme-foreground: var(--color-white);
+  --color-scheme-text: var(--color-neutral-darkest);
+  --color-scheme-border: var(--color-neutral-darkest-15);
+  --color-scheme-btn-text: var(--color-white);
+
   --font-weight-bold: 700;
   --font-display: "Fraunces", serif;
 
