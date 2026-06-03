@@ -10,20 +10,26 @@ export function Header114() {
         <div className="py-16 md:py-24 lg:py-28">
           <div className="relative z-10 grid h-full auto-cols-fr grid-cols-1 gap-12 md:grid-cols-2 md:gap-20">
             <div className="flex flex-col justify-start md:justify-center">
-              <h1 className="text-h1 font-bold text-balance text-white">
+              <h1 className="hero-rise text-h1 font-bold text-balance text-white">
                 Find your wellness community today
               </h1>
-              <div className="mt-6 flex flex-wrap gap-4 md:mt-8">
-                <Button title="探索" variant="alternate">
-                  探索
+              <div
+                className="hero-rise mt-6 flex flex-wrap gap-4 md:mt-8"
+                style={{ animationDelay: "0.12s" }}
+              >
+                <Button title="イベントを探す" variant="alternate">
+                  イベントを探す
                 </Button>
-                <Button title="参加" variant="secondary-alt">
-                  参加
+                <Button title="無料ではじめる" variant="secondary-alt">
+                  無料ではじめる
                 </Button>
               </div>
             </div>
             <div className="flex flex-col justify-end">
-              <p className="text-medium text-white">
+              <p
+                className="hero-rise text-medium text-white"
+                style={{ animationDelay: "0.24s" }}
+              >
                 Actyは、ランニングからヨガ、瞑想まで、あなたの健康を高めるイベントを集めたプラットフォームです。プレミアムな体験と真のコミュニティを求める人たちのための場所。
               </p>
             </div>
@@ -37,7 +43,7 @@ export function Header114() {
           alt="海辺で朝のヨガを楽しむウェルネスコミュニティの仲間たち"
           fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-neutral-darkest/75 via-neutral-darkest/55 to-torea-bay-darker/45" />
+        <div className="absolute inset-0 bg-gradient-to-br from-torea-bay-darkest/85 via-neutral-darkest/60 to-neutral-darkest/65" />
       </div>
     </section>
   );

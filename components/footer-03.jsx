@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 import {
   FacebookLogo,
@@ -10,6 +11,28 @@ import {
   YoutubeLogo,
 } from "relume-icons";
 
+const COL_ONE = [
+  { label: "ホーム", href: "/" },
+  { label: "イベント一覧", href: "/events" },
+  { label: "イベント詳細", href: "/events/detail" },
+  { label: "コミュニティ", href: "/community" },
+  { label: "サインイン", href: "/signin" },
+];
+const COL_TWO = [
+  { label: "サインアップ", href: "/signup" },
+  { label: "プライバシー", href: "#" },
+  { label: "利用規約", href: "#" },
+  { label: "お問い合わせ", href: "#" },
+  { label: "ブログ", href: "#" },
+];
+const SOCIAL = [
+  { Icon: FacebookLogo, label: "Facebook" },
+  { Icon: InstagramLogo, label: "Instagram" },
+  { Icon: XLogo, label: "X", className: "p-0.5" },
+  { Icon: LinkedinLogo, label: "LinkedIn" },
+  { Icon: YoutubeLogo, label: "YouTube" },
+];
+
 export function Footer3() {
   return (
     <footer className="px-[5%] py-12 md:py-18 lg:py-20 scheme-1">
@@ -17,9 +40,9 @@ export function Footer3() {
         <div className="grid grid-cols-1 gap-x-[4vw] gap-y-12 pb-12 md:gap-y-16 md:pb-18 lg:grid-cols-[1fr_0.5fr] lg:gap-y-4 lg:pb-20">
           <div>
             <div className="mb-6 md:mb-8">
-              <a href="#" aria-label="Acty ホーム">
+              <Link href="/" aria-label="Acty ホーム">
                 <Logo />
-              </a>
+              </Link>
             </div>
             <div className="mb-6 md:mb-8">
               <p className="text-small mb-1 font-semibold">住所</p>
@@ -38,57 +61,27 @@ export function Footer3() {
               </a>
             </div>
             <div className="grid grid-flow-col grid-cols-[max-content] items-start justify-start gap-x-3">
-              <a href="#" aria-label="Facebook">
-                <FacebookLogo className="size-6 text-scheme-text" />
-              </a>
-              <a href="#" aria-label="Instagram">
-                <InstagramLogo className="size-6 text-scheme-text" />
-              </a>
-              <a href="#" aria-label="X">
-                <XLogo className="size-6 p-0.5 text-scheme-text" />
-              </a>
-              <a href="#" aria-label="LinkedIn">
-                <LinkedinLogo className="size-6 text-scheme-text" />
-              </a>
-              <a href="#" aria-label="YouTube">
-                <YoutubeLogo className="size-6 text-scheme-text" />
-              </a>
+              {SOCIAL.map(({ Icon, label, className }) => (
+                <a key={label} href="#" aria-label={label}>
+                  <Icon className={`size-6 text-scheme-text ${className ?? ""}`} />
+                </a>
+              ))}
             </div>
           </div>
           <div className="grid grid-cols-1 items-start gap-x-6 gap-y-10 md:grid-cols-2 md:gap-x-8 md:gap-y-4">
             <ul>
-              <li className="text-small py-2 font-semibold">
-                <a href="#">ホーム</a>
-              </li>
-              <li className="text-small py-2 font-semibold">
-                <a href="#">イベント一覧</a>
-              </li>
-              <li className="text-small py-2 font-semibold">
-                <a href="#">イベント詳細</a>
-              </li>
-              <li className="text-small py-2 font-semibold">
-                <a href="#">コミュニティ</a>
-              </li>
-              <li className="text-small py-2 font-semibold">
-                <a href="#">サインイン</a>
-              </li>
+              {COL_ONE.map((l) => (
+                <li key={l.label} className="text-small py-2 font-semibold">
+                  <Link href={l.href}>{l.label}</Link>
+                </li>
+              ))}
             </ul>
             <ul>
-              <li className="text-small py-2 font-semibold">
-                <a href="#">サインアップ</a>
-              </li>
-              <li className="text-small py-2 font-semibold">
-                <a href="#">プライバシー</a>
-              </li>
-              <li className="text-small py-2 font-semibold">
-                <a href="#">利用規約</a>
-              </li>
-              <li className="text-small py-2 font-semibold">
-                <a href="#">お問い合わせ</a>
-              </li>
-              <li className="text-small py-2 font-semibold">
-                <a href="#">ブログ</a>
-              </li>
+              {COL_TWO.map((l) => (
+                <li key={l.label} className="text-small py-2 font-semibold">
+                  <Link href={l.href}>{l.label}</Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

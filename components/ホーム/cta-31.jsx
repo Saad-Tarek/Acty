@@ -16,14 +16,14 @@ export function Cta31() {
               Actyに参加して、プレミアムなコミュニティの一員になる
             </p>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-4 md:mt-8">
-              <Button title="参加">参加</Button>
-              <Button title="探索" variant="secondary">
-                探索
+              <Button title="無料ではじめる">無料ではじめる</Button>
+              <Button title="イベントを探す" variant="secondary">
+                イベントを探す
               </Button>
             </div>
           </div>
         </div>
-        <div className="w-full">
+        <div className="img-zoom w-full rounded-image">
           <img
             src="https://images.unsplash.com/photo-1571008887538-b36bb32f4571?auto=format&fit=crop&q=80&w=1800"
             className="aspect-video size-full rounded-image object-cover"

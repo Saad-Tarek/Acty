@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { motion } from "motion/react";
+import Link from "next/link";
 import React, { useState } from "react";
 import { KeyboardArrowDown } from "relume-icons";
 
@@ -37,6 +38,10 @@ const useRelume = () => {
     animateDropdownIcon,
   };
 };
+
+const NAV_LINK = "relative block py-3 text-base lg:px-4 lg:py-2";
+const DROPDOWN_LINK =
+  "block py-3 pl-[5%] text-base lg:py-2 lg:pr-8 lg:pl-4 lg:text-left";
 
 export function Navbar3() {
   const useActive = useRelume();
@@ -74,19 +79,19 @@ export function Navbar3() {
         }}
         className="absolute top-0 left-0 z-modal flex h-dvh w-[90%] flex-col border-r border-scheme-border bg-scheme-background px-[5%] pb-4 md:w-[80%] lg:visible lg:static lg:-ml-4 lg:flex lg:h-auto lg:w-auto lg:flex-row lg:border-none lg:px-0 lg:pb-0 lg:[--opacity-closed:100%] lg:[--x-closed:0%]"
       >
-        <a
-          href="#"
+        <Link
+          href="/"
           className="mt-10 mb-8 flex shrink-0 lg:hidden"
           aria-label="Acty ホーム"
         >
           <Logo />
-        </a>
-        <a href="#" className="relative block py-3 text-base lg:px-4 lg:py-2">
+        </Link>
+        <Link href="/" className={NAV_LINK}>
           ホーム
-        </a>
-        <a href="#" className="relative block py-3 text-base lg:px-4 lg:py-2">
+        </Link>
+        <Link href="/events" className={NAV_LINK}>
           イベント
-        </a>
+        </Link>
         <div
           onMouseEnter={useActive.openDropdownOnHover}
           onMouseLeave={useActive.closeDropdownOnLeave}
@@ -133,29 +138,20 @@ export function Navbar3() {
               animate={useActive.animateDropdownMenu}
               className="bg-scheme-background lg:absolute lg:z-dropdown lg:border lg:border-scheme-border lg:p-2 lg:[--y-close:25%]"
             >
-              <a
-                href="#"
-                className="block py-3 pl-[5%] text-base lg:py-2 lg:pr-8 lg:pl-4 lg:text-left"
-              >
-                ランニング
-              </a>
-              <a
-                href="#"
-                className="block py-3 pl-[5%] text-base lg:py-2 lg:pr-8 lg:pl-4 lg:text-left"
-              >
-                ヨガ
-              </a>
-              <a
-                href="#"
-                className="block py-3 pl-[5%] text-base lg:py-2 lg:pr-8 lg:pl-4 lg:text-left"
-              >
-                ハイキング
-              </a>
+              <Link href="/community" className={DROPDOWN_LINK}>
+                コミュニティ
+              </Link>
+              <Link href="/events" className={DROPDOWN_LINK}>
+                イベント一覧
+              </Link>
+              <Link href="/events/detail" className={DROPDOWN_LINK}>
+                イベント詳細
+              </Link>
             </motion.div>
           </ConditionalRender>
         </div>
-        <Button className="mt-6 w-full lg:hidden" title="メニュー" size="sm">
-          メニュー
+        <Button className="mt-6 w-full lg:hidden" title="新規登録" size="sm" asChild>
+          <Link href="/signup">新規登録</Link>
         </Button>
       </motion.div>
       <ConditionalRender condition={useActive.isMobileMenuOpen}>
@@ -168,23 +164,22 @@ export function Navbar3() {
           onClick={useActive.toggleMobileMenu}
         />
       </ConditionalRender>
-      <a
-        href="#"
+      <Link
+        href="/"
         className="flex min-h-16 shrink-0 items-center"
         aria-label="Acty ホーム"
       >
         <Logo />
-      </a>
+      </Link>
       <div className="flex min-h-16 items-center justify-end gap-x-4">
-        <div>
-          <Button
-            title="ログイン"
-            size="sm"
-            className="px-4 py-1 md:px-6 md:py-2"
-          >
-            ログイン
-          </Button>
-        </div>
+        <Button
+          title="ログイン"
+          size="sm"
+          className="px-4 py-1 md:px-6 md:py-2"
+          asChild
+        >
+          <Link href="/signin">ログイン</Link>
+        </Button>
       </div>
     </section>
   );
