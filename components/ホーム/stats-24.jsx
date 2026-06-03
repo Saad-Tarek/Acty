@@ -8,7 +8,7 @@ import React from "react";
 import { PlayCircle } from "relume-icons";
 
 const TRIGGER =
-  "group flex-col items-start justify-start rounded-r-card rounded-l-none border-0 border-l-2 py-4 pr-4 pl-6 text-left whitespace-normal transition-colors duration-200 border-scheme-border hover:bg-neutral-darkest-5 data-[state=active]:border-torea-bay data-[state=active]:bg-torea-bay-lightest md:pl-8";
+  "group flex-col items-start justify-start rounded-card border border-transparent px-5 py-5 text-left whitespace-normal transition-colors duration-200 hover:bg-neutral-darkest-5 data-[state=active]:border-torea-bay-lighter data-[state=active]:bg-torea-bay-lightest md:px-6";
 
 function StatTrigger({ value, figure, label, note }) {
   return (

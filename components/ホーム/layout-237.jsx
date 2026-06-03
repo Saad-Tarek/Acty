@@ -43,9 +43,9 @@ export function Layout237() {
                 key={f.title}
                 className="group flex w-full flex-col items-center text-center"
               >
-                <div className="mb-5 md:mb-6">
+                <div className="mb-5 flex size-16 items-center justify-center rounded-card bg-burnt-sienna-lightest transition-transform duration-300 ease-out group-hover:-translate-y-1 md:mb-6">
                   <img
-                    className="size-12 transition-transform duration-300 ease-out group-hover:-translate-y-1"
+                    className="size-9"
                     src={f.icon}
                     alt=""
                     aria-hidden="true"

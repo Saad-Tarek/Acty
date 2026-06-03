@@ -6,7 +6,7 @@ import { StarFull } from "relume-icons";
 const Stars = () => (
   <div className="mb-6 flex gap-1 md:mb-8" role="img" aria-label="5つ星評価">
     {Array.from({ length: 5 }).map((_, i) => (
-      <StarFull key={i} className="size-6 text-scheme-text" aria-hidden="true" />
+      <StarFull key={i} className="size-6 text-burnt-sienna" aria-hidden="true" />
     ))}
   </div>
 );
