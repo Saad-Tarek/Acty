@@ -1,0 +1,495 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+/* Self-hosted fonts — woff2 bundled in /public/fonts (no CDN per project rules). */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/inter-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/inter-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/inter-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/inter-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/fraunces-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/fraunces-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/fraunces-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("/fonts/fraunces-900.woff2") format("woff2");
+}
+
+@custom-variant alternate (&:is(.alternate *));
+@custom-variant badge-alt (&:is(.badge-alt *));
+@custom-variant btn-dark (&:is(.btn-dark *));
+@custom-variant btn-light (&:is(.btn-light *));
+
+@theme {
+  --color-white: #ffffff;
+  --color-neutral-lightest: #f2f2f2;
+  --color-neutral-lighter: #d8d8d8;
+  --color-neutral-light: #b2b2b2;
+  --color-neutral: #7f7f7f;
+  --color-neutral-dark: #4c4c4c;
+  --color-neutral-darker: #191919;
+  --color-neutral-darkest: #000000;
+  --color-white-5: color-mix(in srgb, var(--color-white), transparent 95%);
+  --color-white-10: color-mix(in srgb, var(--color-white), transparent 90%);
+  --color-white-15: color-mix(in srgb, var(--color-white), transparent 85%);
+  --color-white-20: color-mix(in srgb, var(--color-white), transparent 80%);
+  --color-white-30: color-mix(in srgb, var(--color-white), transparent 70%);
+  --color-white-40: color-mix(in srgb, var(--color-white), transparent 60%);
+  --color-white-50: color-mix(in srgb, var(--color-white), transparent 50%);
+  --color-white-60: color-mix(in srgb, var(--color-white), transparent 40%);
+  --color-neutral-darkest-5: color-mix(
+    in srgb,
+    var(--color-neutral-darkest),
+    transparent 95%
+  );
+  --color-neutral-darkest-10: color-mix(
+    in srgb,
+    var(--color-neutral-darkest),
+    transparent 90%
+  );
+  --color-neutral-darkest-15: color-mix(
+    in srgb,
+    var(--color-neutral-darkest),
+    transparent 85%
+  );
+  --color-neutral-darkest-20: color-mix(
+    in srgb,
+    var(--color-neutral-darkest),
+    transparent 80%
+  );
+  --color-neutral-darkest-30: color-mix(
+    in srgb,
+    var(--color-neutral-darkest),
+    transparent 70%
+  );
+  --color-neutral-darkest-40: color-mix(
+    in srgb,
+    var(--color-neutral-darkest),
+    transparent 60%
+  );
+  --color-neutral-darkest-50: color-mix(
+    in srgb,
+    var(--color-neutral-darkest),
+    transparent 50%
+  );
+  --color-neutral-darkest-60: color-mix(
+    in srgb,
+    var(--color-neutral-darkest),
+    transparent 40%
+  );
+  --color-torea-bay-lightest: #e6ebf4;
+  --color-torea-bay-lighter: #ced8e9;
+  --color-torea-bay-light: #5477b2;
+  --color-torea-bay: #0b3d91;
+  --color-torea-bay-dark: #083074;
+  --color-torea-bay-darker: #04183a;
+  --color-torea-bay-darkest: #03122b;
+  --color-burnt-sienna-lightest: #fcf1ec;
+  --color-burnt-sienna-lighter: #f9e4d9;
+  --color-burnt-sienna-light: #eca17c;
+  --color-burnt-sienna: #e57a44;
+  --color-burnt-sienna-dark: #b76136;
+  --color-burnt-sienna-darker: #5b301b;
+  --color-burnt-sienna-darkest: #442414;
+  --color-silver-tree-lightest: #f0f7f3;
+  --color-silver-tree-lighter: #e2f0e8;
+  --color-silver-tree-light: #9cccb0;
+  --color-silver-tree: #72b78f;
+  --color-silver-tree-dark: #5b9272;
+  --color-silver-tree-darker: #2d4939;
+  --color-silver-tree-darkest: #22362a;
+  --color-hopbush-lightest: #f9eef5;
+  --color-hopbush-lighter: #f3deec;
+  --color-hopbush-light: #d68dbe;
+  --color-hopbush: #c55da3;
+  --color-hopbush-dark: #9d4a82;
+  --color-hopbush-darker: #4e2541;
+  --color-hopbush-darkest: #3b1b30;
+
+  --font-weight-bold: 700;
+  --font-display: "Fraunces", serif;
+
+  --text-h1: 3rem;
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: 1%;
+
+  --text-h2: 2.75rem;
+  --text-h2--line-height: 1.2;
+  --text-h2--letter-spacing: 1%;
+
+  --text-h3: 2rem;
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: 1%;
+
+  --text-h4: 1.5rem;
+  --text-h4--line-height: 1.2;
+  --text-h4--letter-spacing: 1%;
+
+  --text-h5: 1.25rem;
+  --text-h5--line-height: 1.2;
+  --text-h5--letter-spacing: 1%;
+
+  --text-h6: 1.125rem;
+  --text-h6--line-height: 1.2;
+  --text-h6--letter-spacing: 1%;
+
+  --text-large: 1.125rem;
+  --text-large--line-height: 1.6;
+
+  --text-medium: 1rem;
+  --text-medium--line-height: 1.6;
+
+  --text-regular: 0.875rem;
+  --text-regular--line-height: 1.6;
+
+  --text-small: 0.75rem;
+  --text-small--line-height: 1.6;
+
+  --text-tiny: 0.625rem;
+  --text-tiny--line-height: 1.6;
+
+  --radius-button: 0.75rem;
+  --radius-card: 1rem;
+  --radius-checkbox: 0.25rem;
+  --radius-carousel: 0.5rem;
+  --radius-form: min(0.75rem, 0.75rem);
+  --radius-badge: 0.75rem;
+  --radius-image: 1rem;
+
+  --breakpoint-*: initial;
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+
+  --container-*: initial;
+  --container-xxs: 20rem;
+  --container-xs: 25rem;
+  --container-sm: 30rem;
+  --container-md: 35rem;
+  --container-lg: 48rem;
+  --container-xl: 64rem;
+  --container-xxl: 80rem;
+
+  --max-w-xxs: var(--container-xxs);
+  --max-w-xs: var(--container-xs);
+  --max-w-sm: var(--container-sm);
+  --max-w-md: var(--container-md);
+  --max-w-lg: var(--container-lg);
+  --max-w-xl: var(--container-xl);
+  --max-w-xxl: var(--container-xxl);
+
+  --spacing-18: 4.5rem;
+  --spacing-30: 7.5rem;
+
+  @keyframes accordion-down {
+    from {
+      height: 0px;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0px;
+    }
+  }
+  @keyframes loop-horizontally {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  @keyframes loop-testimonials {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-135rem);
+    }
+  }
+  @keyframes loop-vertically {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-50%);
+    }
+  }
+  @keyframes loop-vertically-top {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-50%);
+    }
+  }
+  @keyframes loop-vertically-bottom {
+    from {
+      transform: translateY(-50%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @keyframes marquee-horizontally {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes marquee-top {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes marquee-right {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes marquee-bottom {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+  @keyframes marquee-left {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @keyframes tabs {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-loop-horizontally: loop-horizontally 20s linear infinite;
+  --animate-loop-testimonials: loop-testimonials 30s linear infinite;
+  --animate-loop-vertically: loop-vertically 30s linear infinite;
+  --animate-loop-vertically-top: loop-vertically-top 50s linear infinite;
+  --animate-loop-vertically-bottom: loop-vertically-bottom 50s linear infinite;
+  --animate-marquee-horizontally: marquee-top 30s linear infinite;
+  --animate-marquee-top: marquee-top 50s linear infinite;
+  --animate-marquee-right: marquee-right 25s linear infinite;
+  --animate-marquee-bottom: marquee-bottom 50s linear infinite;
+  --animate-marquee-left: marquee-left 25s linear infinite;
+  --animate-tabs: tabs 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Responsive type scale — desktop (≥992px) sizes. Lifted out of @theme,
+   which (in Tailwind v4) may only hold custom properties or @keyframes. */
+@media (min-width: 992px) {
+  :root {
+    --text-h1: 5.25rem;
+    --text-h2: 3.75rem;
+    --text-h3: 3rem;
+    --text-h4: 2.5rem;
+    --text-h5: 2rem;
+    --text-h6: 1.625rem;
+    --text-large: 1.625rem;
+    --text-medium: 1.25rem;
+    --text-regular: 1.125rem;
+    --text-small: 1rem;
+    --text-tiny: 0.75rem;
+  }
+}
+
+@utility scheme-1 {
+  --color-scheme-background: var(--color-white);
+  --color-scheme-foreground: var(--color-white);
+  --color-scheme-text: var(--color-neutral-darkest);
+  --color-scheme-border: var(--color-neutral-darkest-15);
+  --color-scheme-btn-text: var(--color-white);
+
+  background-color: var(--color-scheme-background);
+  color: var(--color-scheme-text);
+
+  & [data-slot="button"][data-variant="default"] {
+    color: var(--color-scheme-btn-text);
+  }
+}
+
+@utility scheme-2 {
+  --color-scheme-background: var(--color-neutral-lightest);
+  --color-scheme-foreground: var(--color-neutral-lightest);
+  --color-scheme-text: var(--color-neutral-darkest);
+  --color-scheme-border: var(--color-neutral-darkest-15);
+  --color-scheme-btn-text: var(--color-white);
+
+  background-color: var(--color-scheme-background);
+  color: var(--color-scheme-text);
+
+  & [data-slot="button"][data-variant="default"] {
+    color: var(--color-scheme-btn-text);
+  }
+}
+
+@utility scheme-3 {
+  --color-scheme-background: var(--color-neutral-lighter);
+  --color-scheme-foreground: var(--color-neutral-lighter);
+  --color-scheme-text: var(--color-neutral-darkest);
+  --color-scheme-border: var(--color-neutral-darkest-15);
+  --color-scheme-btn-text: var(--color-white);
+
+  background-color: var(--color-scheme-background);
+  color: var(--color-scheme-text);
+
+  & [data-slot="button"][data-variant="default"] {
+    color: var(--color-scheme-btn-text);
+  }
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Fraunces", sans-serif;
+  }
+
+  body {
+    font-family: "Inter", sans-serif;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@utility container {
+  margin-inline: auto;
+  max-width: var(--container-xxl);
+}
+
+@utility scrollbar-none {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Semantic z-index scale — no arbitrary 999/9999 values. */
+@utility z-dropdown {
+  z-index: 1000;
+}
+@utility z-sticky {
+  z-index: 1100;
+}
+@utility z-modal-backdrop {
+  z-index: 1200;
+}
+@utility z-modal {
+  z-index: 1300;
+}
+@utility z-toast {
+  z-index: 1400;
+}
+@utility z-tooltip {
+  z-index: 1500;
+}
+
+@utility logo-alt {
+  & img[alt*="logo" i],
+  & img[src*="logo" i] {
+    filter: brightness(0) invert(1);
+  }
+}
+
+/* Accessibility — visible keyboard focus on all interactive elements (WCAG 2.2 AA). */
+@layer base {
+  :where(a, button, [role="button"], input, textarea, select, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-torea-bay);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Reduced motion — collapse the bundled marquee/spring/tab animations to instant. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

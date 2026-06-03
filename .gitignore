@@ -1,0 +1,12 @@
+/node_modules
+/.next
+/out
+/build
+*.log
+.DS_Store
+.env*.local
+
+# Local QA / scratch artifacts
+/.shots
+/.imgcheck
+/test-results
