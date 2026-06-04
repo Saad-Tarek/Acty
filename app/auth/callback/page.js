@@ -3,9 +3,11 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
+import { useLocale } from "@/lib/i18n/locale-provider";
 
 export default function Page() {
   const router = useRouter();
+  const { t } = useLocale();
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -37,14 +39,14 @@ export default function Page() {
       <div className="text-center">
         {error ? (
           <>
-            <h1 className="text-h4 font-bold">サインインできませんでした</h1>
+            <h1 className="text-h4 font-bold">{t.auth.callback.failTitle}</h1>
             <p className="mt-3 text-medium">{error}</p>
             <a href="/signin" className="mt-4 inline-block underline">
-              もう一度お試しください
+              {t.auth.callback.failRetry}
             </a>
           </>
         ) : (
-          <p className="text-medium">サインインしています…</p>
+          <p className="text-medium">{t.auth.callback.signingIn}</p>
         )}
       </div>
     </section>

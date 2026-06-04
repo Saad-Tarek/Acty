@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/components/auth/auth-provider";
+import { useLocale } from "@/lib/i18n/locale-provider";
 import {
   getEvent,
   getMyParticipation,
@@ -15,6 +16,9 @@ import { seatsLeft, seatsLabel } from "@/lib/format";
 
 export function JoinWidget({ event }) {
   const { user, loading: authLoading, configured } = useAuth();
+  const { t } = useLocale();
+  const j = t.eventsPage.join;
+  const seats = t.eventsPage.seats;
   const [ev, setEv] = useState(event); // live copy, refreshed after mutations
   const [part, setPart] = useState(undefined); // undefined = loading
   const [busy, setBusy] = useState(false);
@@ -45,13 +49,12 @@ export function JoinWidget({ event }) {
     setErr(false);
     try {
       const result = await fn();
-      // Re-pull live seat counts so "残り N名" reflects the change immediately.
       const fresh = await getEvent(event.slug).catch(() => null);
       if (fresh) setEv(fresh);
       setMsg(typeof okMsg === "function" ? okMsg(result) : okMsg);
     } catch {
       setErr(true);
-      setMsg("処理に失敗しました。時間をおいて、もう一度お試しください。");
+      setMsg(j.msgError);
     }
     setBusy(false);
   };
@@ -63,25 +66,21 @@ export function JoinWidget({ event }) {
         setPart({ status });
         return status;
       },
-      (status) =>
-        status === "confirmed"
-          ? "参加が確定しました。"
-          : "満席のため、キャンセル待ちに登録しました。空きが出ると繰り上がります。",
+      (status) => (status === "confirmed" ? j.msgConfirmed : j.msgWaitlisted),
     );
 
   const doCancel = () =>
     run(async () => {
       await cancelParticipation(event.id);
       setPart({ status: "cancelled" });
-    }, "参加をキャンセルしました。");
+    }, j.msgCancelled);
 
-  const card =
-    "rounded-card border border-scheme-border p-6 md:p-7";
+  const card = "rounded-card border border-scheme-border p-6 md:p-7";
 
   if (!configured) {
     return (
       <div className={card}>
-        <p className="text-medium">参加機能は現在準備中です。</p>
+        <p className="text-medium">{j.preparing}</p>
       </div>
     );
   }
@@ -89,12 +88,10 @@ export function JoinWidget({ event }) {
   if (!user && !authLoading) {
     return (
       <div className={card}>
-        <p className="mb-1 text-medium font-semibold">{seatsLabel(ev)}</p>
-        <p className="mb-4 text-small text-neutral-darkest/70">
-          参加するにはサインインしてください。登録は無料です。
-        </p>
-        <Button className="w-full" title="サインインして参加" asChild>
-          <Link href="/signin">サインインして参加</Link>
+        <p className="mb-1 text-medium font-semibold">{seatsLabel(ev, seats)}</p>
+        <p className="mb-4 text-small text-neutral-darkest/70">{j.signinPrompt}</p>
+        <Button className="w-full" title={j.signinBtn} asChild>
+          <Link href="/signin">{j.signinBtn}</Link>
         </Button>
       </div>
     );
@@ -103,7 +100,7 @@ export function JoinWidget({ event }) {
   if (part === undefined || authLoading) {
     return (
       <div className={card}>
-        <p className="text-medium text-neutral-darkest/60">読み込んでいます…</p>
+        <p className="text-medium text-neutral-darkest/60">{j.loading}</p>
       </div>
     );
   }
@@ -117,48 +114,40 @@ export function JoinWidget({ event }) {
         <div>
           {part.status === "confirmed" ? (
             <Badge className="mb-3 border-silver-tree bg-silver-tree-lightest text-silver-tree-darker">
-              参加予定
+              {j.confirmedBadge}
             </Badge>
           ) : (
             <Badge className="mb-3 border-burnt-sienna bg-burnt-sienna-lightest text-burnt-sienna-darker">
-              キャンセル待ち
-              {part.waitlist_pos ? `（${part.waitlist_pos}番目）` : ""}
+              {j.waitlistBadge}
+              {part.waitlist_pos ? j.waitlistPos(part.waitlist_pos) : ""}
             </Badge>
           )}
           <p className="mb-4 text-small text-neutral-darkest/70">
-            {part.status === "confirmed"
-              ? "あなたの参加は確定しています。当日お会いしましょう。"
-              : "空きが出ると自動的に繰り上がり、メールでお知らせします。"}
+            {part.status === "confirmed" ? j.confirmedNote : j.waitlistNote}
           </p>
           <Button
             variant="secondary"
             className="w-full"
-            title="参加をキャンセル"
+            title={j.cancelBtn}
             onClick={doCancel}
             disabled={busy}
           >
-            {busy ? "処理中…" : "参加をキャンセル"}
+            {busy ? j.processing : j.cancelBtn}
           </Button>
         </div>
       ) : (
         <div>
-          <p className="mb-1 text-medium font-semibold">{seatsLabel(ev)}</p>
+          <p className="mb-1 text-medium font-semibold">{seatsLabel(ev, seats)}</p>
           <p className="mb-4 text-small text-neutral-darkest/70">
-            {isFull
-              ? "満席です。キャンセル待ちに登録すると、空きが出たときに繰り上がります。"
-              : "ワンタップで参加できます。前日までキャンセル可能です。"}
+            {isFull ? j.fullNote : j.joinNote}
           </p>
           <Button
             className="w-full"
-            title={isFull ? "キャンセル待ちに登録" : "このイベントに参加"}
+            title={isFull ? j.waitlistJoinBtn : j.joinBtn}
             onClick={doJoin}
             disabled={busy}
           >
-            {busy
-              ? "処理中…"
-              : isFull
-                ? "キャンセル待ちに登録"
-                : "このイベントに参加"}
+            {busy ? j.processing : isFull ? j.waitlistJoinBtn : j.joinBtn}
           </Button>
         </div>
       )}

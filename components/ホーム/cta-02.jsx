@@ -2,12 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useLocale } from "@/lib/i18n/locale-provider";
 import Link from "next/link";
 import React, { useState } from "react";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function Cta2() {
+  const { t } = useLocale();
+  const s = t.home.cta02;
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // idle | submitting | success | error
   const [message, setMessage] = useState("");
@@ -16,7 +19,7 @@ export function Cta2() {
     e.preventDefault();
     if (!EMAIL_RE.test(email.trim())) {
       setStatus("error");
-      setMessage("有効なメールアドレスを入力してください。");
+      setMessage(s.errInvalid);
       return;
     }
     setStatus("submitting");
@@ -25,13 +28,11 @@ export function Cta2() {
       // No backend yet: simulate the network round-trip.
       await new Promise((resolve) => setTimeout(resolve, 900));
       setStatus("success");
-      setMessage("ご登録ありがとうございます。確認メールをお送りしました。");
+      setMessage(s.success);
       setEmail("");
     } catch {
       setStatus("error");
-      setMessage(
-        "登録に失敗しました。時間をおいて、もう一度お試しください。",
-      );
+      setMessage(s.errFail);
     }
   };
 
@@ -43,12 +44,8 @@ export function Cta2() {
       <div className="container">
         <div className="grid grid-cols-1 gap-x-20 gap-y-12 md:gap-y-16 lg:grid-cols-2 lg:items-center">
           <div>
-            <h2 className="mb-5 text-h2 font-bold md:mb-6">
-              最新イベント情報を受け取る
-            </h2>
-            <p className="text-medium">
-              毎週のイベント情報と限定特典をメールでお届け
-            </p>
+            <h2 className="mb-5 text-h2 font-bold md:mb-6">{s.title}</h2>
+            <p className="text-medium">{s.body}</p>
             <div className="mt-6 w-full max-w-sm md:mt-8">
               <form
                 className="mb-3 grid max-w-sm grid-cols-1 gap-y-3 sm:grid-cols-[1fr_max-content] sm:gap-4"
@@ -58,8 +55,8 @@ export function Cta2() {
                 <Input
                   id="newsletter-email"
                   type="email"
-                  placeholder="メールアドレスを入力"
-                  aria-label="メールアドレス"
+                  placeholder={s.placeholder}
+                  aria-label={t.auth.form.emailLabel}
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
@@ -72,8 +69,8 @@ export function Cta2() {
                   aria-describedby="newsletter-status"
                   disabled={isSubmitting}
                 />
-                <Button title="登録" disabled={isSubmitting}>
-                  {isSubmitting ? "登録中…" : "登録"}
+                <Button title={s.submit} disabled={isSubmitting}>
+                  {isSubmitting ? s.submitting : s.submit}
                 </Button>
               </form>
               <p
@@ -90,11 +87,11 @@ export function Cta2() {
               >
                 {message || (
                   <>
-                    登録することで、
+                    {s.termsPre}
                     <Link href="/terms" className="underline">
-                      利用規約
+                      {s.termsLink}
                     </Link>
-                    に同意したものとみなされます。
+                    {s.termsPost}
                   </>
                 )}
               </p>

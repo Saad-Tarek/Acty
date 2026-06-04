@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { VideoIframe } from "@/components/ui/video-iframe";
 import { Kicker } from "@/components/ui/kicker";
+import { useLocale } from "@/lib/i18n/locale-provider";
 import React from "react";
 import { PlayCircle } from "relume-icons";
 
@@ -23,17 +24,15 @@ function StatTrigger({ value, figure, label, note }) {
 }
 
 export function Stats24() {
+  const { t } = useLocale();
+  const s = t.home.stats;
   return (
     <section className="px-[5%] py-16 md:py-24 lg:py-28 scheme-1">
       <div className="container flex flex-col items-start">
         <div className="mb-12 w-full max-w-lg md:mb-18 lg:mb-20">
-          <Kicker>実績</Kicker>
-          <h2 className="mb-5 text-h2 font-bold md:mb-6">
-            Actyが信頼される理由
-          </h2>
-          <p className="text-medium">
-            数字が物語る、Actyコミュニティの成長と満足度。各項目を選ぶと、その様子をご覧いただけます。
-          </p>
+          <Kicker>{s.kicker}</Kicker>
+          <h2 className="mb-5 text-h2 font-bold md:mb-6">{s.title}</h2>
+          <p className="text-medium">{s.lead}</p>
         </div>
         <Tabs
           defaultValue="tab-1"
@@ -43,20 +42,20 @@ export function Stats24() {
             <StatTrigger
               value="tab-1"
               figure="15000"
-              label="アクティブメンバー"
-              note="健康と幸福を求める人たちが毎日利用"
+              label={s.items[0].label}
+              note={s.items[0].note}
             />
             <StatTrigger
               value="tab-2"
               figure="2500"
-              label="開催イベント"
-              note="様々なカテゴリーで毎週開催されるイベント"
+              label={s.items[1].label}
+              note={s.items[1].note}
             />
             <StatTrigger
               value="tab-3"
               figure="98"
-              label="満足度パーセント"
-              note="参加者から寄せられた高い評価と信頼"
+              label={s.items[2].label}
+              note={s.items[2].note}
             />
           </TabsList>
           <div className="flex items-center justify-center overflow-hidden">

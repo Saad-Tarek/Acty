@@ -2,6 +2,7 @@ import "./globals.css";
 import { Navbar3 } from "@/components/navbar-03";
 import { Footer3 } from "@/components/footer-03";
 import { AuthProvider } from "@/components/auth/auth-provider";
+import { LocaleProvider } from "@/lib/i18n/locale-provider";
 
 const SITE_URL = "https://acty.btechjapan.com";
 const SITE_DESCRIPTION =
@@ -51,11 +52,13 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="antialiased">
-        <AuthProvider>
-          <Navbar3 />
-          {children}
-          <Footer3 />
-        </AuthProvider>
+        <LocaleProvider>
+          <AuthProvider>
+            <Navbar3 />
+            {children}
+            <Footer3 />
+          </AuthProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

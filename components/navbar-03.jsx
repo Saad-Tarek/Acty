@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
 import { useAuth } from "@/components/auth/auth-provider";
+import { useLocale } from "@/lib/i18n/locale-provider";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -47,12 +48,14 @@ const DROPDOWN_LINK =
 export function Navbar3() {
   const useActive = useRelume();
   const { user } = useAuth();
+  const { t, locale, setLocale } = useLocale();
+  const toggleLocale = () => setLocale(locale === "ja" ? "en" : "ja");
   return (
     <section className="z-sticky grid w-full grid-cols-[1fr_max-content_1fr] items-center justify-between bg-scheme-background px-[5%] md:min-h-18 scheme-1">
       <button
         className="flex size-12 flex-col justify-center lg:hidden"
         onClick={useActive.toggleMobileMenu}
-        aria-label="メニューを開く"
+        aria-label={t.nav.openMenu}
         aria-expanded={useActive.isMobileMenuOpen}
       >
         <span className="my-[3px] h-0.5 w-6 bg-scheme-text lg:hidden" />
@@ -89,10 +92,10 @@ export function Navbar3() {
           <Logo />
         </Link>
         <Link href="/" className={NAV_LINK}>
-          ホーム
+          {t.nav.home}
         </Link>
         <Link href="/events" className={NAV_LINK}>
-          イベント
+          {t.nav.events}
         </Link>
         <div
           onMouseEnter={useActive.openDropdownOnHover}
@@ -112,7 +115,7 @@ export function Navbar3() {
               }
             }}
           >
-            コミュニティ
+            {t.nav.community}
             <motion.span
               variants={{ rotated: { rotate: 180 }, initial: { rotate: 0 } }}
               animate={useActive.animateDropdownIcon}
@@ -141,27 +144,34 @@ export function Navbar3() {
               className="bg-scheme-background lg:absolute lg:z-dropdown lg:rounded-card lg:border lg:border-scheme-border lg:p-2 lg:shadow-lg lg:[--y-close:25%]"
             >
               <Link href="/community" className={DROPDOWN_LINK}>
-                コミュニティ
+                {t.nav.community}
               </Link>
               <Link href="/events" className={DROPDOWN_LINK}>
-                イベント一覧
+                {t.nav.eventList}
               </Link>
               <Link href="/events/asa-no-run" className={DROPDOWN_LINK}>
-                イベント詳細
+                {t.nav.eventDetail}
               </Link>
             </motion.div>
           </ConditionalRender>
         </div>
         <Button
           className="mt-6 w-full lg:hidden"
-          title={user ? "マイページ" : "新規登録"}
+          title={user ? t.nav.account : t.nav.signup}
           size="sm"
           asChild
         >
           <Link href={user ? "/account" : "/signup"}>
-            {user ? "マイページ" : "新規登録"}
+            {user ? t.nav.account : t.nav.signup}
           </Link>
         </Button>
+        <button
+          type="button"
+          onClick={toggleLocale}
+          className="mt-6 self-start text-base underline lg:hidden"
+        >
+          {t.switchTo}
+        </button>
       </motion.div>
       <ConditionalRender condition={useActive.isMobileMenuOpen}>
         <motion.div
@@ -180,15 +190,23 @@ export function Navbar3() {
       >
         <Logo />
       </Link>
-      <div className="flex min-h-16 items-center justify-end gap-x-4">
+      <div className="flex min-h-16 items-center justify-end gap-x-3 md:gap-x-4">
+        <button
+          type="button"
+          onClick={toggleLocale}
+          className="hidden text-small font-medium underline-offset-4 hover:underline lg:inline"
+          aria-label="Switch language"
+        >
+          {t.switchTo}
+        </button>
         <Button
-          title={user ? "マイページ" : "ログイン"}
+          title={user ? t.nav.account : t.nav.login}
           size="sm"
           className="px-4 py-1 md:px-6 md:py-2"
           asChild
         >
           <Link href={user ? "/account" : "/signin"}>
-            {user ? "マイページ" : "ログイン"}
+            {user ? t.nav.account : t.nav.login}
           </Link>
         </Button>
       </div>

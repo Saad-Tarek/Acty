@@ -8,15 +8,17 @@ import { Kicker } from "@/components/ui/kicker";
 import { ChevronRight } from "relume-icons";
 import { listEvents } from "@/lib/supabase/events";
 import { eventDateParts, seatsLabel } from "@/lib/format";
+import { useLocale } from "@/lib/i18n/locale-provider";
 
 function EventCard({ ev }) {
-  const d = eventDateParts(ev.starts_at);
+  const { t, locale } = useLocale();
+  const d = eventDateParts(ev.starts_at, locale);
   return (
     <div className="flex flex-col items-start">
       <Link
         href={`/events/${ev.slug}`}
         className="img-zoom relative mb-5 block aspect-[3/2] w-full rounded-image md:mb-6"
-        aria-label={`${ev.title}の詳細`}
+        aria-label={ev.title}
       >
         <img
           src={ev.cover_image}
@@ -36,16 +38,18 @@ function EventCard({ ev }) {
         <h3 className="text-h5 font-bold">{ev.title}</h3>
       </Link>
       <p className="mb-2">{ev.location}</p>
-      <p className="text-small text-neutral-darkest/70">{seatsLabel(ev)}</p>
+      <p className="text-small text-neutral-darkest/70">
+        {seatsLabel(ev, t.eventsPage.seats)}
+      </p>
       <Button
-        title={`${ev.title}の詳細へ`}
+        title={t.eventsPage.list.detail}
         variant="link"
         size="link"
         iconRight={<ChevronRight className="text-scheme-text" />}
         className="mt-5 md:mt-6"
         asChild
       >
-        <Link href={`/events/${ev.slug}`}>詳細へ</Link>
+        <Link href={`/events/${ev.slug}`}>{t.eventsPage.list.detail}</Link>
       </Button>
     </div>
   );
@@ -63,6 +67,8 @@ function CardSkeleton() {
 }
 
 export function EventList() {
+  const { t } = useLocale();
+  const s = t.eventsPage.list;
   const [events, setEvents] = useState(null);
   const [error, setError] = useState(false);
 
@@ -81,18 +87,14 @@ export function EventList() {
       <div className="container">
         <div className="mb-12 md:mb-18 lg:mb-20">
           <div className="mx-auto max-w-lg text-center">
-            <Kicker className="justify-center">発見</Kicker>
-            <h2 className="mt-3 text-h2 font-bold md:mt-4">開催予定のイベント</h2>
-            <p className="mt-5 text-medium md:mt-6">
-              気になるイベントを見つけて、ワンタップで参加しましょう。
-            </p>
+            <Kicker className="justify-center">{s.kicker}</Kicker>
+            <h2 className="mt-3 text-h2 font-bold md:mt-4">{s.title}</h2>
+            <p className="mt-5 text-medium md:mt-6">{s.lead}</p>
           </div>
         </div>
 
         {error ? (
-          <p className="text-center text-medium">
-            イベントを読み込めませんでした。時間をおいて、もう一度お試しください。
-          </p>
+          <p className="text-center text-medium">{s.error}</p>
         ) : events === null ? (
           <div className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 md:gap-y-16 lg:grid-cols-3">
             {[0, 1, 2].map((i) => (
@@ -100,9 +102,7 @@ export function EventList() {
             ))}
           </div>
         ) : events.length === 0 ? (
-          <p className="text-center text-medium">
-            現在予定されているイベントはありません。また近いうちにご確認ください。
-          </p>
+          <p className="text-center text-medium">{s.empty}</p>
         ) : (
           <div className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 md:gap-y-16 lg:grid-cols-3">
             {events.map((ev) => (

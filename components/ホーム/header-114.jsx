@@ -1,10 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useLocale } from "@/lib/i18n/locale-provider";
 import Link from "next/link";
 import React from "react";
 
 export function Header114() {
+  const { t } = useLocale();
   return (
     <section className="relative px-[5%] scheme-1">
       <div className="container flex max-h-[60rem] min-h-svh">
@@ -12,17 +14,17 @@ export function Header114() {
           <div className="relative z-10 grid h-full auto-cols-fr grid-cols-1 gap-12 md:grid-cols-2 md:gap-20">
             <div className="flex flex-col justify-start md:justify-center">
               <h1 className="hero-rise text-h1 font-bold text-balance text-white">
-                Find your wellness community today
+                {t.home.hero.title}
               </h1>
               <div
                 className="hero-rise mt-6 flex flex-wrap gap-4 md:mt-8"
                 style={{ animationDelay: "0.12s" }}
               >
-                <Button title="イベントを探す" variant="alternate" asChild>
-                  <Link href="/events">イベントを探す</Link>
+                <Button title={t.home.hero.ctaEvents} variant="alternate" asChild>
+                  <Link href="/events">{t.home.hero.ctaEvents}</Link>
                 </Button>
-                <Button title="無料ではじめる" variant="secondary-alt" asChild>
-                  <Link href="/signup">無料ではじめる</Link>
+                <Button title={t.home.hero.ctaSignup} variant="secondary-alt" asChild>
+                  <Link href="/signup">{t.home.hero.ctaSignup}</Link>
                 </Button>
               </div>
             </div>
@@ -31,7 +33,7 @@ export function Header114() {
                 className="hero-rise text-medium text-white"
                 style={{ animationDelay: "0.24s" }}
               >
-                Actyは、ランニングからヨガ、瞑想まで、あなたの健康を高めるイベントを集めたプラットフォームです。プレミアムな体験と真のコミュニティを求める人たちのための場所。
+                {t.home.hero.lead}
               </p>
             </div>
           </div>

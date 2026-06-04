@@ -6,10 +6,13 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/components/auth/auth-provider";
+import { useLocale } from "@/lib/i18n/locale-provider";
 import { listMyEvents } from "@/lib/supabase/events";
 import { eventDateParts } from "@/lib/format";
 
 function MyEvents({ enabled }) {
+  const { t, locale } = useLocale();
+  const a = t.account;
   const [items, setItems] = useState(null);
   const [error, setError] = useState(false);
 
@@ -24,25 +27,16 @@ function MyEvents({ enabled }) {
     };
   }, [enabled]);
 
-  if (error) {
-    return (
-      <p className="text-medium">
-        参加情報を読み込めませんでした。時間をおいて、もう一度お試しください。
-      </p>
-    );
-  }
-  if (items === null) {
-    return <p className="text-medium text-neutral-darkest/60">読み込んでいます…</p>;
-  }
+  if (error) return <p className="text-medium">{a.loadError}</p>;
+  if (items === null)
+    return <p className="text-medium text-neutral-darkest/60">{a.loading}</p>;
   if (items.length === 0) {
     return (
       <>
-        <p className="text-medium">
-          まだ参加予定のイベントはありません。気になるイベントを探してみましょう。
-        </p>
+        <p className="text-medium">{a.empty}</p>
         <div className="mt-5">
-          <Button title="イベントを見る" asChild>
-            <Link href="/events">イベントを見る</Link>
+          <Button title={a.emptyCta} asChild>
+            <Link href="/events">{a.emptyCta}</Link>
           </Button>
         </div>
       </>
@@ -52,7 +46,7 @@ function MyEvents({ enabled }) {
   return (
     <ul className="flex flex-col divide-y divide-scheme-border">
       {items.map((p) => {
-        const d = eventDateParts(p.event.starts_at);
+        const d = eventDateParts(p.event.starts_at, locale);
         return (
           <li
             key={p.event.slug}
@@ -75,11 +69,11 @@ function MyEvents({ enabled }) {
             </div>
             {p.status === "confirmed" ? (
               <Badge className="shrink-0 border-silver-tree bg-silver-tree-lightest text-silver-tree-darker">
-                参加予定
+                {a.confirmed}
               </Badge>
             ) : (
               <Badge className="shrink-0 border-burnt-sienna bg-burnt-sienna-lightest text-burnt-sienna-darker">
-                キャンセル待ち
+                {a.waitlist}
               </Badge>
             )}
           </li>
@@ -92,6 +86,8 @@ function MyEvents({ enabled }) {
 export default function Page() {
   const router = useRouter();
   const { user, loading, configured, signOut } = useAuth();
+  const { t } = useLocale();
+  const a = t.account;
 
   useEffect(() => {
     if (!loading && configured && !user) router.replace("/signin");
@@ -100,7 +96,7 @@ export default function Page() {
   if (loading || (!user && configured)) {
     return (
       <section className="flex min-h-[60vh] items-center justify-center scheme-1">
-        <p className="text-medium">読み込んでいます…</p>
+        <p className="text-medium">{a.loading}</p>
       </section>
     );
   }
@@ -109,37 +105,37 @@ export default function Page() {
     user?.user_metadata?.name ||
     user?.user_metadata?.full_name ||
     user?.email?.split("@")[0] ||
-    "ゲスト";
+    a.guest;
 
   return (
     <section className="px-[5%] py-16 md:py-24 lg:py-28 scheme-1">
       <div className="container max-w-2xl">
-        <h1 className="text-h2 font-bold">マイページ</h1>
-        <p className="mt-3 text-medium">こんにちは、{name} さん。</p>
+        <h1 className="text-h2 font-bold">{a.title}</h1>
+        <p className="mt-3 text-medium">{a.greeting(name)}</p>
 
         <div className="mt-8 rounded-card border border-scheme-border p-6 md:p-8">
-          <h2 className="text-h5 font-bold">アカウント</h2>
+          <h2 className="text-h5 font-bold">{a.accountSection}</h2>
           <dl className="mt-4 grid grid-cols-[max-content_1fr] gap-x-6 gap-y-2 text-medium">
-            <dt className="text-neutral-darkest/60">メール</dt>
+            <dt className="text-neutral-darkest/60">{a.emailLabel}</dt>
             <dd>{user?.email ?? "—"}</dd>
           </dl>
           <div className="mt-6">
             <Button
               variant="secondary"
               size="sm"
-              title="サインアウト"
+              title={a.signOut}
               onClick={async () => {
                 await signOut();
                 router.replace("/");
               }}
             >
-              サインアウト
+              {a.signOut}
             </Button>
           </div>
         </div>
 
         <div className="mt-8 rounded-card bg-neutral-darkest-5 p-6 md:p-8">
-          <h2 className="mb-5 text-h5 font-bold">参加予定のイベント</h2>
+          <h2 className="mb-5 text-h5 font-bold">{a.myEvents}</h2>
           <MyEvents enabled={Boolean(user)} />
         </div>
       </div>

@@ -1,39 +1,30 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useLocale } from "@/lib/i18n/locale-provider";
 import Link from "next/link";
 import React from "react";
 import { ChevronRight } from "relume-icons";
 
-const LEADERS = [
-  {
-    icon: "/icons/directions_run.svg",
-    title: "ランニングの先導者",
-    body: "毎朝、東京の街を駆ける。その足跡は仲間たちの道標となる。",
-  },
-  {
-    icon: "/icons/mindfulness.svg",
-    title: "瞑想の道標",
-    body: "静寂の中で見つけた答え。今、その道を他者と歩む喜びを知る。",
-  },
-  {
-    icon: "/icons/self_improvement.svg",
-    title: "ヨガの探求者",
-    body: "呼吸と動きの調和。その先にある自分との対話を皆に伝えたい。",
-  },
+const ICONS = [
+  "/icons/directions_run.svg",
+  "/icons/mindfulness.svg",
+  "/icons/self_improvement.svg",
 ];
 
 export function Layout551() {
+  const { t } = useLocale();
+  const s = t.community.leaders;
   return (
     <section className="grid grid-cols-1 items-center gap-y-16 pt-16 md:pt-24 lg:grid-cols-2 lg:pt-0 scheme-1">
       <div className="mx-[5%] sm:max-w-md md:justify-self-start lg:mr-20 lg:ml-[5vw] lg:justify-self-end">
         <div className="grid grid-cols-1 gap-x-6 gap-y-8 py-2">
-          {LEADERS.map((l) => (
+          {s.items.map((l, i) => (
             <div key={l.title} className="group flex self-start">
               <div className="mr-6 flex-none self-start">
                 <img
                   className="size-12 transition-transform duration-300 ease-out group-hover:-translate-y-1"
-                  src={l.icon}
+                  src={ICONS[i]}
                   alt=""
                   aria-hidden="true"
                 />
@@ -43,13 +34,13 @@ export function Layout551() {
                 <p>{l.body}</p>
                 <div className="mt-5 flex items-center gap-4 md:mt-6">
                   <Button
-                    title={`${l.title}を見る`}
+                    title={s.introBtn}
                     variant="link"
                     size="link"
                     iconRight={<ChevronRight className="text-scheme-text" />}
                     asChild
                   >
-                    <Link href="/events">紹介を見る</Link>
+                    <Link href="/events">{s.introBtn}</Link>
                   </Button>
                 </div>
               </div>

@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
+import { useLocale } from "@/lib/i18n/locale-provider";
 import {
   FacebookLogo,
   InstagramLogo,
@@ -11,21 +12,6 @@ import {
   YoutubeLogo,
 } from "relume-icons";
 
-const COL_ONE = [
-  { label: "ホーム", href: "/" },
-  { label: "イベント一覧", href: "/events" },
-  { label: "イベント詳細", href: "/events/asa-no-run" },
-  { label: "コミュニティ", href: "/community" },
-  { label: "サインイン", href: "/signin" },
-];
-const COL_TWO = [
-  { label: "サインアップ", href: "/signup" },
-  { label: "採用情報", href: "/careers" },
-  { label: "ブログ", href: "/blog" },
-  { label: "お問い合わせ", href: "mailto:hello@acty.jp" },
-  { label: "プライバシー", href: "/privacy" },
-  { label: "利用規約", href: "/terms" },
-];
 const SOCIAL = [
   { Icon: FacebookLogo, label: "Facebook" },
   { Icon: InstagramLogo, label: "Instagram" },
@@ -35,22 +21,42 @@ const SOCIAL = [
 ];
 
 export function Footer3() {
+  const { t } = useLocale();
+
+  const colOne = [
+    { label: t.nav.home, href: "/" },
+    { label: t.nav.eventList, href: "/events" },
+    { label: t.nav.eventDetail, href: "/events/asa-no-run" },
+    { label: t.nav.community, href: "/community" },
+    { label: t.nav.login, href: "/signin" },
+  ];
+  const colTwo = [
+    { label: t.nav.signup, href: "/signup" },
+    { label: t.footer.careers, href: "/careers" },
+    { label: t.footer.blog, href: "/blog" },
+    { label: t.footer.contact, href: "mailto:hello@acty.jp" },
+    { label: t.footer.privacy, href: "/privacy" },
+    { label: t.footer.terms, href: "/terms" },
+  ];
+
   return (
     <footer className="px-[5%] py-12 md:py-18 lg:py-20 scheme-1">
       <div className="container">
         <div className="grid grid-cols-1 gap-x-[4vw] gap-y-12 pb-12 md:gap-y-16 md:pb-18 lg:grid-cols-[1fr_0.5fr] lg:gap-y-4 lg:pb-20">
           <div>
             <div className="mb-6 md:mb-8">
-              <Link href="/" aria-label="Acty ホーム">
+              <Link href="/" aria-label="Acty">
                 <Logo />
               </Link>
             </div>
             <div className="mb-6 md:mb-8">
-              <p className="text-small mb-1 font-semibold">住所</p>
-              <p className="text-small mb-5 md:mb-6">
-                〒150-0002 東京都渋谷区渋谷2-1-1
+              <p className="text-small mb-1 font-semibold">
+                {t.footer.addressLabel}
               </p>
-              <p className="text-small mb-1 font-semibold">連絡先</p>
+              <p className="text-small mb-5 md:mb-6">{t.footer.address}</p>
+              <p className="text-small mb-1 font-semibold">
+                {t.footer.contactLabel}
+              </p>
               <a href="tel:+81350000000" className="text-small block underline">
                 03-5000-0000
               </a>
@@ -71,15 +77,15 @@ export function Footer3() {
           </div>
           <div className="grid grid-cols-1 items-start gap-x-6 gap-y-10 md:grid-cols-2 md:gap-x-8 md:gap-y-4">
             <ul>
-              {COL_ONE.map((l) => (
-                <li key={l.label} className="text-small py-2 font-semibold">
+              {colOne.map((l) => (
+                <li key={l.href} className="text-small py-2 font-semibold">
                   <Link href={l.href}>{l.label}</Link>
                 </li>
               ))}
             </ul>
             <ul>
-              {COL_TWO.map((l) => (
-                <li key={l.label} className="text-small py-2 font-semibold">
+              {colTwo.map((l) => (
+                <li key={l.href} className="text-small py-2 font-semibold">
                   <Link href={l.href}>{l.label}</Link>
                 </li>
               ))}
@@ -88,16 +94,16 @@ export function Footer3() {
         </div>
         <div className="h-px w-full bg-scheme-border" />
         <div className="text-small flex flex-col-reverse items-start justify-between pt-6 pb-4 md:flex-row md:items-center md:pt-8 md:pb-0">
-          <p className="mt-8 md:mt-0">© 2025 Acty. All rights reserved.</p>
+          <p className="mt-8 md:mt-0">{t.footer.copyright}</p>
           <ul className="text-small grid grid-flow-row grid-cols-[max-content] justify-center gap-y-4 md:grid-flow-col md:gap-x-6 md:gap-y-0">
             <li className="underline">
-              <Link href="/privacy">プライバシーポリシー</Link>
+              <Link href="/privacy">{t.footer.privacyPolicy}</Link>
             </li>
             <li className="underline">
-              <Link href="/terms">利用規約</Link>
+              <Link href="/terms">{t.footer.terms}</Link>
             </li>
             <li className="underline">
-              <Link href="/cookies">クッキー設定</Link>
+              <Link href="/cookies">{t.footer.cookies}</Link>
             </li>
           </ul>
         </div>
