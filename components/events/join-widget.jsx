@@ -13,6 +13,7 @@ import {
   cancelParticipation,
 } from "@/lib/supabase/events";
 import { seatsLeft, seatsLabel } from "@/lib/format";
+import { getMyTierSlug } from "@/lib/supabase/membership";
 
 export function JoinWidget({ event }) {
   const { user, loading: authLoading, configured } = useAuth();
@@ -24,6 +25,18 @@ export function JoinWidget({ event }) {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
   const [err, setErr] = useState(false);
+  const [tier, setTier] = useState(null);
+
+  useEffect(() => {
+    if (!user || !event.members_only) return;
+    let active = true;
+    getMyTierSlug()
+      .then((s) => active && setTier(s))
+      .catch(() => active && setTier("free"));
+    return () => {
+      active = false;
+    };
+  }, [user, event.members_only]);
 
   useEffect(() => {
     let active = true;
@@ -107,6 +120,29 @@ export function JoinWidget({ event }) {
 
   const active =
     part && (part.status === "confirmed" || part.status === "waitlisted");
+
+  if (!active && event.members_only && tier !== "premium") {
+    if (tier === null) {
+      return (
+        <div className={card}>
+          <p className="text-medium text-neutral-darkest/60">{j.loading}</p>
+        </div>
+      );
+    }
+    return (
+      <div className={card}>
+        <Badge className="mb-3 border-torea-bay bg-torea-bay-lightest text-torea-bay-darker">
+          {j.membersOnly}
+        </Badge>
+        <p className="mb-4 text-small text-neutral-darkest/70">
+          {j.membersOnlyNote}
+        </p>
+        <Button className="w-full" title={j.upgradeBtn} asChild>
+          <Link href="/membership">{j.upgradeBtn}</Link>
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className={card}>

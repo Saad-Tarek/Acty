@@ -16,7 +16,7 @@ function EventCard({ ev }) {
   return (
     <div className="flex flex-col items-start">
       <Link
-        href={`/events/${ev.slug}`}
+        href={`/event?slug=${ev.slug}`}
         className="img-zoom relative mb-5 block aspect-[3/2] w-full rounded-image md:mb-6"
         aria-label={ev.title}
       >
@@ -34,7 +34,7 @@ function EventCard({ ev }) {
         </div>
       </Link>
       {ev.category_name && <Badge className="mb-3 md:mb-4">{ev.category_name}</Badge>}
-      <Link href={`/events/${ev.slug}`}>
+      <Link href={`/event?slug=${ev.slug}`}>
         <h3 className="text-h5 font-bold">{ev.title}</h3>
       </Link>
       <p className="mb-2">{ev.location}</p>
@@ -49,7 +49,7 @@ function EventCard({ ev }) {
         className="mt-5 md:mt-6"
         asChild
       >
-        <Link href={`/events/${ev.slug}`}>{t.eventsPage.list.detail}</Link>
+        <Link href={`/event?slug=${ev.slug}`}>{t.eventsPage.list.detail}</Link>
       </Button>
     </div>
   );

@@ -24,6 +24,10 @@ export function EventDetail({ slug }) {
     };
   }, [slug]);
 
+  useEffect(() => {
+    if (event?.title) document.title = `${event.title} — Acty`;
+  }, [event]);
+
   if (event === undefined) {
     return (
       <section className="flex min-h-[60vh] items-center justify-center scheme-1">

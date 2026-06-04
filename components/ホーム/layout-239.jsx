@@ -44,7 +44,7 @@ export function Layout239() {
                 title={s.ctaMembership}
                 asChild
               >
-                <Link href="/signup">{s.ctaMembership}</Link>
+                <Link href="/membership">{s.ctaMembership}</Link>
               </Button>
             </div>
           </div>

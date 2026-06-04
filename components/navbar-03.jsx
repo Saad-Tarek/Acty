@@ -149,7 +149,7 @@ export function Navbar3() {
               <Link href="/events" className={DROPDOWN_LINK}>
                 {t.nav.eventList}
               </Link>
-              <Link href="/events/asa-no-run" className={DROPDOWN_LINK}>
+              <Link href="/event?slug=asa-no-run" className={DROPDOWN_LINK}>
                 {t.nav.eventDetail}
               </Link>
             </motion.div>

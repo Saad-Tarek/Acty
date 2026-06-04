@@ -4,7 +4,7 @@ Everything that needs **your** action (accounts, DNS, dashboard config, decision
 kept in one place so nothing is forgotten. Code for each item is already built and
 committed unless noted. Project ref: `jklfdzrgambbntmbtgxe`.
 
-Updated through: Phase 4 (organizer dashboard).
+Updated through: Phase 5 (membership).
 
 ---
 
@@ -35,12 +35,25 @@ The dashboard is at **`/organizer`**. To use it:
   ```
   Then reload `/organizer`.
 
-**Known limitation (static-export):** an event you create shows up immediately in the
-dashboard, the events list, and the roster — but its **public detail page**
-(`/events/<slug>`) is generated at build time, so it appears after the next
-deploy. Fix options for later: (a) I add a "rebuild on publish" webhook, or
-(b) switch the event detail to a runtime route (`/event?slug=…`). Tell me which you
-prefer and I'll wire it.
+**Resolved:** event detail is now a **runtime route** (`/event?slug=…`), so events you
+create work instantly — no rebuild needed. (Trade-off: detail pages are client-rendered,
+so they're not in static HTML for SEO. If event-page SEO matters, we can add a
+self-hosted build runner later — just ask.)
+
+---
+
+## 🟢 Phase 5 — Membership (built & live)
+
+Tiers (Free / Premium) + members-only event gating are built. A `/membership` page
+shows the plans; members-only events show an upgrade prompt instead of the join button.
+**Charging is not wired** (you chose free-only for now) — Premium shows "coming soon".
+
+- [ ] Run `supabase/migrations/0005_membership_demo.sql` (marks サンライズヨガ as
+      members-only so you can see the gating).
+- [ ] To preview the premium experience, grant yourself the premium tier (SQL in that
+      migration's comments), then reload — the members-only event becomes joinable.
+- When you're ready to actually charge: pick a provider (see Phase 5 below) and I'll wire
+  checkout + lock tier changes behind it.
 
 ---
 

@@ -26,8 +26,9 @@ export function Footer3() {
   const colOne = [
     { label: t.nav.home, href: "/" },
     { label: t.nav.eventList, href: "/events" },
-    { label: t.nav.eventDetail, href: "/events/asa-no-run" },
+    { label: t.nav.eventDetail, href: "/event?slug=asa-no-run" },
     { label: t.nav.community, href: "/community" },
+    { label: t.membership.title, href: "/membership" },
     { label: t.nav.login, href: "/signin" },
   ];
   const colTwo = [

@@ -9,6 +9,7 @@ import { useAuth } from "@/components/auth/auth-provider";
 import { useLocale } from "@/lib/i18n/locale-provider";
 import { listMyEvents } from "@/lib/supabase/events";
 import { getMyProfile } from "@/lib/supabase/organizer";
+import { getMyTierSlug } from "@/lib/supabase/membership";
 import { eventDateParts } from "@/lib/format";
 
 function MyEvents({ enabled }) {
@@ -61,7 +62,7 @@ function MyEvents({ enabled }) {
               loading="lazy"
             />
             <div className="grow">
-              <Link href={`/events/${p.event.slug}`}>
+              <Link href={`/event?slug=${p.event.slug}`}>
                 <p className="font-semibold">{p.event.title}</p>
               </Link>
               <p className="text-small text-neutral-darkest/70">
@@ -90,6 +91,7 @@ export default function Page() {
   const { t } = useLocale();
   const a = t.account;
   const [isOrganizer, setIsOrganizer] = useState(false);
+  const [tier, setTier] = useState("free");
 
   useEffect(() => {
     if (!loading && configured && !user) router.replace("/signin");
@@ -100,6 +102,9 @@ export default function Page() {
     let active = true;
     getMyProfile()
       .then((p) => active && setIsOrganizer(p?.role === "organizer" || p?.role === "admin"))
+      .catch(() => {});
+    getMyTierSlug()
+      .then((s) => active && setTier(s || "free"))
       .catch(() => {});
     return () => {
       active = false;
@@ -131,6 +136,13 @@ export default function Page() {
           <dl className="mt-4 grid grid-cols-[max-content_1fr] gap-x-6 gap-y-2 text-medium">
             <dt className="text-neutral-darkest/60">{a.emailLabel}</dt>
             <dd>{user?.email ?? "—"}</dd>
+            <dt className="text-neutral-darkest/60">{a.plan}</dt>
+            <dd className="flex items-center gap-3">
+              {tier === "premium" ? a.premium : a.free}
+              <Link href="/membership" className="text-small underline">
+                {a.upgrade}
+              </Link>
+            </dd>
           </dl>
           <div className="mt-6">
             <Button
