@@ -34,6 +34,22 @@ try {
   } else {
     console.log("RESULT: unexpected response:", JSON.stringify(body));
   }
+
+  // Phase 2: event_summaries view + seeded events
+  const ev = await fetch(
+    `${url}/rest/v1/event_summaries?select=slug,title,capacity,confirmed_count&order=starts_at`,
+    { headers: { apikey: key, Authorization: `Bearer ${key}` } },
+  );
+  console.log("\nevent_summaries HTTP:", ev.status);
+  if (ev.status === 200) {
+    const rows = await ev.json();
+    console.log(`events: ${rows.length}`);
+    for (const r of rows) {
+      console.log(`  - ${r.title} (${r.slug}) cap ${r.capacity}, confirmed ${r.confirmed_count}`);
+    }
+  } else {
+    console.log("event_summaries not available yet:", JSON.stringify(await ev.json()));
+  }
 } catch (e) {
   console.log("RESULT: request failed:", e.message);
 }
