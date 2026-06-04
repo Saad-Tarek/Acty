@@ -101,16 +101,31 @@ export function AuthForm({ mode = "signin" }) {
           <span className="font-semibold">{email}</span>{" "}
           宛にサインイン用のリンクをお送りしました。メール内のリンクを開くと、サインインが完了します。
         </p>
-        <button
-          type="button"
-          className="mt-4 text-small underline"
-          onClick={() => {
-            setStatus("idle");
-            setError("");
-          }}
-        >
-          別のメールアドレスを使う
-        </button>
+        <div className="mt-5 flex flex-col items-center gap-3">
+          <Button
+            asChild
+            title="Gmailを開く"
+            iconLeft={<GoogleGlyph />}
+          >
+            <a
+              href="https://mail.google.com/mail/u/0/#inbox"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Gmailを開く
+            </a>
+          </Button>
+          <button
+            type="button"
+            className="text-small underline"
+            onClick={() => {
+              setStatus("idle");
+              setError("");
+            }}
+          >
+            別のメールアドレスを使う
+          </button>
+        </div>
       </div>
     );
   }
