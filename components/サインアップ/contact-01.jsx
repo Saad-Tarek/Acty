@@ -113,9 +113,9 @@ export function Contact1() {
               }}
             />
             <Label htmlFor="signup-terms" className="cursor-pointer">
-              <a href="#" className="underline">
+              <Link href="/terms" className="underline">
                 利用規約
-              </a>
+              </Link>
               に同意します
             </Label>
           </div>

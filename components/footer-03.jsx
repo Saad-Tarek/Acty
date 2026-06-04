@@ -20,10 +20,11 @@ const COL_ONE = [
 ];
 const COL_TWO = [
   { label: "サインアップ", href: "/signup" },
-  { label: "プライバシー", href: "#" },
-  { label: "利用規約", href: "#" },
+  { label: "採用情報", href: "/careers" },
+  { label: "ブログ", href: "/blog" },
   { label: "お問い合わせ", href: "mailto:hello@acty.jp" },
-  { label: "ブログ", href: "#" },
+  { label: "プライバシー", href: "/privacy" },
+  { label: "利用規約", href: "/terms" },
 ];
 const SOCIAL = [
   { Icon: FacebookLogo, label: "Facebook" },
@@ -90,13 +91,13 @@ export function Footer3() {
           <p className="mt-8 md:mt-0">© 2025 Acty. All rights reserved.</p>
           <ul className="text-small grid grid-flow-row grid-cols-[max-content] justify-center gap-y-4 md:grid-flow-col md:gap-x-6 md:gap-y-0">
             <li className="underline">
-              <a href="#">プライバシーポリシー</a>
+              <Link href="/privacy">プライバシーポリシー</Link>
             </li>
             <li className="underline">
-              <a href="#">利用規約</a>
+              <Link href="/terms">利用規約</Link>
             </li>
             <li className="underline">
-              <a href="#">クッキー設定</a>
+              <Link href="/cookies">クッキー設定</Link>
             </li>
           </ul>
         </div>

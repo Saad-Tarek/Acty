@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 import React, { useState } from "react";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -90,9 +91,9 @@ export function Cta2() {
                 {message || (
                   <>
                     登録することで、
-                    <a href="#" className="underline">
+                    <Link href="/terms" className="underline">
                       利用規約
-                    </a>
+                    </Link>
                     に同意したものとみなされます。
                   </>
                 )}
