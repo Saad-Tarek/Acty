@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/components/auth/auth-provider";
 import {
+  getEvent,
   getMyParticipation,
   joinEvent,
   cancelParticipation,
@@ -14,6 +15,7 @@ import { seatsLeft, seatsLabel } from "@/lib/format";
 
 export function JoinWidget({ event }) {
   const { user, loading: authLoading, configured } = useAuth();
+  const [ev, setEv] = useState(event); // live copy, refreshed after mutations
   const [part, setPart] = useState(undefined); // undefined = loading
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
@@ -34,7 +36,7 @@ export function JoinWidget({ event }) {
     };
   }, [user, authLoading, event.id]);
 
-  const left = seatsLeft(event);
+  const left = seatsLeft(ev);
   const isFull = left === 0;
 
   const run = async (fn, okMsg) => {
@@ -43,6 +45,9 @@ export function JoinWidget({ event }) {
     setErr(false);
     try {
       const result = await fn();
+      // Re-pull live seat counts so "残り N名" reflects the change immediately.
+      const fresh = await getEvent(event.slug).catch(() => null);
+      if (fresh) setEv(fresh);
       setMsg(typeof okMsg === "function" ? okMsg(result) : okMsg);
     } catch {
       setErr(true);
@@ -84,7 +89,7 @@ export function JoinWidget({ event }) {
   if (!user && !authLoading) {
     return (
       <div className={card}>
-        <p className="mb-1 text-medium font-semibold">{seatsLabel(event)}</p>
+        <p className="mb-1 text-medium font-semibold">{seatsLabel(ev)}</p>
         <p className="mb-4 text-small text-neutral-darkest/70">
           参加するにはサインインしてください。登録は無料です。
         </p>
@@ -137,7 +142,7 @@ export function JoinWidget({ event }) {
         </div>
       ) : (
         <div>
-          <p className="mb-1 text-medium font-semibold">{seatsLabel(event)}</p>
+          <p className="mb-1 text-medium font-semibold">{seatsLabel(ev)}</p>
           <p className="mb-4 text-small text-neutral-darkest/70">
             {isFull
               ? "満席です。キャンセル待ちに登録すると、空きが出たときに繰り上がります。"
