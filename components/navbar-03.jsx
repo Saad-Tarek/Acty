@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
+import { useAuth } from "@/components/auth/auth-provider";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -45,6 +46,7 @@ const DROPDOWN_LINK =
 
 export function Navbar3() {
   const useActive = useRelume();
+  const { user } = useAuth();
   return (
     <section className="z-sticky grid w-full grid-cols-[1fr_max-content_1fr] items-center justify-between bg-scheme-background px-[5%] md:min-h-18 scheme-1">
       <button
@@ -150,8 +152,15 @@ export function Navbar3() {
             </motion.div>
           </ConditionalRender>
         </div>
-        <Button className="mt-6 w-full lg:hidden" title="新規登録" size="sm" asChild>
-          <Link href="/signup">新規登録</Link>
+        <Button
+          className="mt-6 w-full lg:hidden"
+          title={user ? "マイページ" : "新規登録"}
+          size="sm"
+          asChild
+        >
+          <Link href={user ? "/account" : "/signup"}>
+            {user ? "マイページ" : "新規登録"}
+          </Link>
         </Button>
       </motion.div>
       <ConditionalRender condition={useActive.isMobileMenuOpen}>
@@ -173,12 +182,14 @@ export function Navbar3() {
       </Link>
       <div className="flex min-h-16 items-center justify-end gap-x-4">
         <Button
-          title="ログイン"
+          title={user ? "マイページ" : "ログイン"}
           size="sm"
           className="px-4 py-1 md:px-6 md:py-2"
           asChild
         >
-          <Link href="/signin">ログイン</Link>
+          <Link href={user ? "/account" : "/signin"}>
+            {user ? "マイページ" : "ログイン"}
+          </Link>
         </Button>
       </div>
     </section>
