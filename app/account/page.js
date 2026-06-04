@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/components/auth/auth-provider";
 import { useLocale } from "@/lib/i18n/locale-provider";
 import { listMyEvents } from "@/lib/supabase/events";
+import { getMyProfile } from "@/lib/supabase/organizer";
 import { eventDateParts } from "@/lib/format";
 
 function MyEvents({ enabled }) {
@@ -88,10 +89,22 @@ export default function Page() {
   const { user, loading, configured, signOut } = useAuth();
   const { t } = useLocale();
   const a = t.account;
+  const [isOrganizer, setIsOrganizer] = useState(false);
 
   useEffect(() => {
     if (!loading && configured && !user) router.replace("/signin");
   }, [loading, configured, user, router]);
+
+  useEffect(() => {
+    if (!user) return;
+    let active = true;
+    getMyProfile()
+      .then((p) => active && setIsOrganizer(p?.role === "organizer" || p?.role === "admin"))
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [user]);
 
   if (loading || (!user && configured)) {
     return (
@@ -138,6 +151,15 @@ export default function Page() {
           <h2 className="mb-5 text-h5 font-bold">{a.myEvents}</h2>
           <MyEvents enabled={Boolean(user)} />
         </div>
+
+        {isOrganizer && (
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-card border border-scheme-border p-6 md:p-8">
+            <p className="text-h5 font-bold">{t.organizer.title}</p>
+            <Button title={t.organizer.title} asChild>
+              <Link href="/organizer">{t.organizer.createBtn}</Link>
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );
