@@ -14,7 +14,7 @@ import {
 const COL_ONE = [
   { label: "ホーム", href: "/" },
   { label: "イベント一覧", href: "/events" },
-  { label: "イベント詳細", href: "/events/detail" },
+  { label: "イベント詳細", href: "/events/asa-no-run" },
   { label: "コミュニティ", href: "/community" },
   { label: "サインイン", href: "/signin" },
 ];

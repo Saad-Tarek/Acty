@@ -7,6 +7,7 @@ import React, {
   useState,
 } from "react";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
+import { ensureProfile } from "@/lib/supabase/events";
 
 const AuthContext = createContext({
   session: null,
@@ -30,9 +31,11 @@ export function AuthProvider({ children }) {
       if (!active) return;
       setSession(data.session);
       setLoading(false);
+      if (data.session?.user) ensureProfile(data.session.user);
     });
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((event, next) => {
       setSession(next);
+      if (event === "SIGNED_IN" && next?.user) ensureProfile(next.user);
     });
     return () => {
       active = false;
