@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Kicker } from "@/components/ui/kicker";
+import Link from "next/link";
 import React from "react";
 import { ChevronRight } from "relume-icons";
 
@@ -57,13 +58,17 @@ export function Layout237() {
             ))}
           </div>
           <div className="mt-12 flex items-center gap-4 md:mt-18 lg:mt-20">
-            <Button variant="secondary">すべての体験を見る</Button>
+            <Button variant="secondary" title="すべての体験を見る" asChild>
+              <Link href="/events">すべての体験を見る</Link>
+            </Button>
             <Button
               iconRight={<ChevronRight className="text-scheme-text" />}
               variant="link"
               size="link"
+              title="イベントカレンダー"
+              asChild
             >
-              イベントカレンダー
+              <Link href="/events">イベントカレンダー</Link>
             </Button>
           </div>
         </div>

@@ -109,7 +109,9 @@ export function Team2() {
             Actyの未来を一緒に作る仲間を探しています。
           </p>
           <div className="mt-5 flex justify-center md:mt-6">
-            <Button variant="secondary">募集要項を見る</Button>
+            <Button variant="secondary" title="募集要項を見る" asChild>
+              <a href="mailto:careers@acty.jp">募集要項を見る</a>
+            </Button>
           </div>
         </div>
       </div>

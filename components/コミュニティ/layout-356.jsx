@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import React, { Fragment } from "react";
 
 const STEPS = [
@@ -59,8 +60,8 @@ export function Layout356() {
                         </h2>
                         <p className="text-medium">{s.body}</p>
                         <div className="mt-6 flex flex-wrap items-center gap-4 md:mt-8">
-                          <Button title="詳しく見る" variant="secondary">
-                            詳しく見る
+                          <Button title="詳しく見る" variant="secondary" asChild>
+                            <Link href="/events">詳しく見る</Link>
                           </Button>
                         </div>
                       </div>

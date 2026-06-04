@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import React from "react";
 
 export function Header114() {
@@ -17,11 +18,11 @@ export function Header114() {
                 className="hero-rise mt-6 flex flex-wrap gap-4 md:mt-8"
                 style={{ animationDelay: "0.12s" }}
               >
-                <Button title="イベントを探す" variant="alternate">
-                  イベントを探す
+                <Button title="イベントを探す" variant="alternate" asChild>
+                  <Link href="/events">イベントを探す</Link>
                 </Button>
-                <Button title="無料ではじめる" variant="secondary-alt">
-                  無料ではじめる
+                <Button title="無料ではじめる" variant="secondary-alt" asChild>
+                  <Link href="/signup">無料ではじめる</Link>
                 </Button>
               </div>
             </div>

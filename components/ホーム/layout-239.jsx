@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Kicker } from "@/components/ui/kicker";
+import Link from "next/link";
 import React from "react";
 import { ChevronRight } from "relume-icons";
 
@@ -40,13 +41,17 @@ export function Layout239() {
               Actyは単なるイベント予約アプリではありません。プレミアムなコミュニティ体験を通じて、あなたの健康目標を実現するお手伝いをします。
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-4 md:mt-8">
-              <Button variant="secondary">サービスを詳しく見る</Button>
+              <Button variant="secondary" title="サービスを詳しく見る" asChild>
+                <Link href="/events">サービスを詳しく見る</Link>
+              </Button>
               <Button
                 iconRight={<ChevronRight className="text-scheme-text" />}
                 variant="link"
                 size="link"
+                title="メンバーシップを見る"
+                asChild
               >
-                メンバーシップを見る
+                <Link href="/signup">メンバーシップを見る</Link>
               </Button>
             </div>
           </div>

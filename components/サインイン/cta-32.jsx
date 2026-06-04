@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Link from "next/link";
 import React, { useState } from "react";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -87,7 +88,13 @@ export function Cta32() {
                 ? "メールアドレスと8文字以上のパスワードを入力してください。"
                 : status === "success"
                   ? "サインインしました。ようこそ戻ってきました。"
-                  : "アカウントをお持ちでない方は、新規登録から始められます。"}
+                  : "メールアドレスとパスワードを入力してください。"}
+            </p>
+            <p className="text-small">
+              アカウントをお持ちでない方は{" "}
+              <Link href="/signup" className="font-medium underline">
+                新規登録
+              </Link>
             </p>
           </form>
         </div>

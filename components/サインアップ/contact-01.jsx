@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Kicker } from "@/components/ui/kicker";
+import Link from "next/link";
 import React, { useState } from "react";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -137,7 +138,13 @@ export function Contact1() {
                 ? error
                 : status === "success"
                   ? "ご登録ありがとうございます。確認メールをお送りしました。"
-                  : "すでにアカウントをお持ちですか? サインインへ。"}
+                  : "登録は無料です。いつでも退会できます。"}
+            </p>
+            <p className="text-small">
+              すでにアカウントをお持ちですか?{" "}
+              <Link href="/signin" className="font-medium underline">
+                サインイン
+              </Link>
             </p>
           </div>
         </form>

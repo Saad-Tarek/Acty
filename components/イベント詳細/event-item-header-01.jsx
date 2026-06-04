@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 import React, { useState } from "react";
 import { ChevronLeft } from "relume-icons";
 
@@ -41,7 +42,7 @@ export function EventItemHeader1() {
               iconLeft={<ChevronLeft className="text-scheme-text" />}
               asChild
             >
-              <a href="#">すべてのイベント</a>
+              <Link href="/events">すべてのイベント</Link>
             </Button>
             <h1 className="mt-6 text-h2 font-bold md:mt-8">
               朝日の中でのランニングクラブ

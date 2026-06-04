@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import React from "react";
 
 export function Cta31() {
@@ -24,11 +25,11 @@ export function Cta31() {
               Actyに参加して、プレミアムなコミュニティの一員に。最初のイベントは無料で参加できます。
             </p>
             <div className="mt-6 flex flex-wrap gap-4 md:mt-8">
-              <Button title="無料ではじめる" variant="alternate">
-                無料ではじめる
+              <Button title="無料ではじめる" variant="alternate" asChild>
+                <Link href="/signup">無料ではじめる</Link>
               </Button>
-              <Button title="イベントを探す" variant="secondary-alt">
-                イベントを探す
+              <Button title="イベントを探す" variant="secondary-alt" asChild>
+                <Link href="/events">イベントを探す</Link>
               </Button>
             </div>
           </div>

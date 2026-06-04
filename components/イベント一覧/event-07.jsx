@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Kicker } from "@/components/ui/kicker";
+import Link from "next/link";
 import React from "react";
 import { ChevronRight } from "relume-icons";
 
@@ -58,8 +59,8 @@ export function Event7() {
         <div className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 md:gap-y-16 lg:grid-cols-3">
           {EVENTS.map((ev) => (
             <div key={ev.title} className="flex flex-col items-start">
-              <a
-                href="#"
+              <Link
+                href="/events/detail"
                 className="img-zoom relative mb-5 block aspect-[3/2] w-full rounded-image md:mb-6"
                 aria-label={`${ev.title}の詳細`}
               >
@@ -75,11 +76,11 @@ export function Event7() {
                   <span className="text-h4 font-bold">{ev.date}</span>
                   <span>{ev.month}</span>
                 </div>
-              </a>
+              </Link>
               <Badge className="mb-3 md:mb-4">{ev.category}</Badge>
-              <a href="#">
+              <Link href="/events/detail">
                 <h3 className="text-h5 font-bold">{ev.title}</h3>
-              </a>
+              </Link>
               <p className="mb-2">{ev.place}</p>
               <p>{ev.body}</p>
               <Button
@@ -88,15 +89,16 @@ export function Event7() {
                 size="link"
                 iconRight={<ChevronRight className="text-scheme-text" />}
                 className="mt-5 md:mt-6"
+                asChild
               >
-                詳細へ
+                <Link href="/events/detail">詳細へ</Link>
               </Button>
             </div>
           ))}
         </div>
         <div className="mt-12 flex justify-center md:mt-18 lg:mt-20">
-          <Button variant="secondary" title="すべてのイベントを見る">
-            すべてのイベントを見る
+          <Button variant="secondary" title="無料で登録して参加する" asChild>
+            <Link href="/signup">無料で登録して参加する</Link>
           </Button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import React from "react";
 import { ChevronRight } from "relume-icons";
 
@@ -46,8 +47,9 @@ export function Layout551() {
                     variant="link"
                     size="link"
                     iconRight={<ChevronRight className="text-scheme-text" />}
+                    asChild
                   >
-                    紹介を見る
+                    <Link href="/events">紹介を見る</Link>
                   </Button>
                 </div>
               </div>

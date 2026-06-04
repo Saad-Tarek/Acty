@@ -22,7 +22,7 @@ const COL_TWO = [
   { label: "サインアップ", href: "/signup" },
   { label: "プライバシー", href: "#" },
   { label: "利用規約", href: "#" },
-  { label: "お問い合わせ", href: "#" },
+  { label: "お問い合わせ", href: "mailto:hello@acty.jp" },
   { label: "ブログ", href: "#" },
 ];
 const SOCIAL = [

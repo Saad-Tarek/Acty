@@ -67,8 +67,8 @@ export function Faq13() {
           <h4 className="mb-3 text-h4 font-bold md:mb-4">さらに質問がある?</h4>
           <p className="text-medium">お気軽にお問い合わせください</p>
           <div className="mt-6 md:mt-8">
-            <Button title="お問い合わせ" variant="secondary">
-              お問い合わせ
+            <Button title="お問い合わせ" variant="secondary" asChild>
+              <a href="mailto:hello@acty.jp">お問い合わせ</a>
             </Button>
           </div>
         </div>
