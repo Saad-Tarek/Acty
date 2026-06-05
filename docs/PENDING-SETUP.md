@@ -4,7 +4,7 @@ Everything that needs **your** action (accounts, DNS, dashboard config, decision
 kept in one place so nothing is forgotten. Code for each item is already built and
 committed unless noted. Project ref: `jklfdzrgambbntmbtgxe`.
 
-Updated through: Phase 5 (membership).
+Updated through: Phase 6 (LINE login).
 
 ---
 
@@ -57,6 +57,21 @@ shows the plans; members-only events show an upgrade prompt instead of the join 
 
 ---
 
+## 🟣 Phase 6 — LINE login (built, needs your config)
+
+Custom LINE bridge (LINE isn't a native Supabase provider). The green LINE button
+is hidden until you set the channel ID. Full runbook: `supabase/functions/line-auth/README.md`.
+
+- [ ] Create a **LINE Login channel** at developers.line.biz → note Channel ID + secret.
+- [ ] Add callback URL `https://acty.btechjapan.com/auth/line` (+ localhost for dev).
+- [ ] Add `NEXT_PUBLIC_LINE_CHANNEL_ID=<id>` to `.env.local` and tell me — I rebuild + redeploy.
+- [ ] Deploy the `line-auth` Edge Function; set secrets `LINE_CHANNEL_ID`, `LINE_CHANNEL_SECRET`.
+- [ ] Test: the **LINEで続ける** button on `/signin`.
+
+*(Apple sign-in stays parked until you have an Apple Developer account.)*
+
+---
+
 ## ⚪ Earlier / optional
 
 - [ ] **Google sign-in** (Phase 1, optional): Authentication → Providers → Google →
@@ -70,8 +85,7 @@ shows the plans; members-only events show an upgrade prompt instead of the join 
 
 - **Phase 5 — Membership / payments:** pick a provider (Stripe, or JP-local PAY.JP /
   Komoju). Tiers/gating get built; charging waits on this choice.
-- **Phase 6 — LINE login:** create a LINE Developers channel (custom Edge Function flow).
-  **Apple sign-in** was dropped (needs the $99/yr Apple Developer Program) — re-add anytime.
+- **Apple sign-in** — parked until you have an Apple Developer account ($99/yr); easy to add then.
 
 ## ✨ Enhancements (nice-to-have, just say the word)
 

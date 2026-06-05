@@ -9,6 +9,7 @@ import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import { useLocale } from "@/lib/i18n/locale-provider";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const LINE_CHANNEL_ID = process.env.NEXT_PUBLIC_LINE_CHANNEL_ID;
 
 function GoogleGlyph() {
   return (
@@ -21,8 +22,16 @@ function GoogleGlyph() {
   );
 }
 
+function LineGlyph() {
+  return (
+    <svg className="size-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 3C6.5 3 2 6.6 2 11c0 4 3.6 7.3 8.4 7.9.3.07.8.22.9.5.1.26.06.66.03.92l-.14.86c-.04.26-.2 1 .9.55s5.9-3.5 8.05-5.98C21.6 14.6 22 12.9 22 11c0-4.4-4.5-8-10-8Z" />
+    </svg>
+  );
+}
+
 /**
- * Passwordless auth: a magic-link email plus "continue with Google".
+ * Passwordless auth: a magic-link email plus "continue with Google" / LINE.
  * @param {{ mode?: "signin" | "signup" }} props
  */
 export function AuthForm({ mode = "signin" }) {
@@ -80,6 +89,23 @@ export function AuthForm({ mode = "signin" }) {
       setError(f.errGoogle);
       setStatus("error");
     }
+  };
+
+  const continueWithLine = () => {
+    if (!LINE_CHANNEL_ID) return;
+    const state = crypto.randomUUID();
+    try {
+      sessionStorage.setItem("acty-line-state", state);
+    } catch {
+      /* ignore */
+    }
+    const redirectUri = `${window.location.origin}/auth/line`;
+    window.location.href =
+      "https://access.line.me/oauth2/v2.1/authorize?response_type=code" +
+      `&client_id=${LINE_CHANNEL_ID}` +
+      `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+      `&state=${state}` +
+      `&scope=${encodeURIComponent("profile openid")}`;
   };
 
   if (status === "sent") {
@@ -171,6 +197,18 @@ export function AuthForm({ mode = "signin" }) {
       >
         {f.google}
       </Button>
+
+      {LINE_CHANNEL_ID && (
+        <button
+          type="button"
+          onClick={continueWithLine}
+          title={f.line}
+          className="inline-flex w-full items-center justify-center gap-3 rounded-button bg-[#06C755] px-6 py-3 font-medium text-white transition-opacity hover:opacity-90"
+        >
+          <LineGlyph />
+          {f.line}
+        </button>
+      )}
 
       <p
         id="auth-status"
