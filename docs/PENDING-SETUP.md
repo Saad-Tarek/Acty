@@ -92,6 +92,17 @@ Notes: admins can do everything organizers can (`/organizer` works too);
 the last remaining admin can't be demoted; role/tier changes by non-admins
 are blocked at the database level.
 
+## 🖼️ Phase 8 — Cover image uploads (built, needs your SQL)
+
+The organizer form now uploads cover images from disk (the URL-paste field is
+gone; old events with URLs keep working). To activate:
+
+- [ ] Run `supabase/migrations/0007_event_covers_storage.sql` in the SQL editor
+      (creates the public `event-covers` bucket, 5MB / images only, organizer-only
+      uploads). If the `create policy` lines error with "must be owner of table
+      objects", create the same policies in Dashboard → Storage → Policies instead.
+- [ ] Test: `/organizer` → edit an event → choose a file → preview appears → save.
+
 ## 📨 Inquiry mail (receive email at btechjapan.com) — free via Cloudflare
 
 - [ ] Cloudflare → btechjapan.com → **Email → Email Routing** → enable (auto-adds MX).
@@ -122,4 +133,4 @@ are blocked at the database level.
 - **Localize event content (JA/EN):** add `title_en` / `description_en` columns + English
   category names; the UI is already bilingual and will prefer them.
 - **English legal pages:** terms / privacy / cookies are Japanese-only for now.
-- **Image uploads** for organizer events (Supabase Storage) instead of pasting an image URL.
+- ~~**Image uploads** for organizer events~~ — built (Phase 8 above).

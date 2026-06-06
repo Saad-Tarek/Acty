@@ -17,6 +17,11 @@ import {
   setEventStatus,
   getRoster,
 } from "@/lib/supabase/organizer";
+import {
+  uploadEventCover,
+  MAX_COVER_BYTES,
+  ALLOWED_COVER_TYPES,
+} from "@/lib/supabase/storage";
 
 const FIELD =
   "w-full rounded-button border border-scheme-border bg-scheme-background px-3 py-2 text-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-torea-bay-lighter";
@@ -50,9 +55,32 @@ function EventForm({ initial, categories, onDone, onCancel }) {
     status: initial?.status === "cancelled" ? "draft" : initial?.status ?? "draft",
   });
   const [busy, setBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [err, setErr] = useState("");
   const set = (k) => (e) =>
     setForm((s) => ({ ...s, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value }));
+
+  const onCoverFile = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!ALLOWED_COVER_TYPES.includes(file.type)) {
+      setErr(f.errFileType);
+      return;
+    }
+    if (file.size > MAX_COVER_BYTES) {
+      setErr(f.errFileSize);
+      return;
+    }
+    setErr("");
+    setUploading(true);
+    try {
+      const url = await uploadEventCover(file);
+      setForm((s) => ({ ...s, cover_image: url }));
+    } catch {
+      setErr(f.errUpload);
+    }
+    setUploading(false);
+  };
 
   const submit = async (e) => {
     e.preventDefault();
@@ -128,7 +156,37 @@ function EventForm({ initial, categories, onDone, onCancel }) {
       </div>
       <div className="grid gap-2">
         <Label htmlFor="ev-cover">{f.cover}</Label>
-        <Input id="ev-cover" type="url" placeholder="https://…" value={form.cover_image} onChange={set("cover_image")} />
+        {form.cover_image ? (
+          <div className="flex items-center gap-4">
+            <img
+              src={form.cover_image}
+              alt=""
+              className="h-20 w-32 rounded-card border border-scheme-border object-cover"
+            />
+            <Button
+              type="button"
+              size="sm"
+              variant="secondary"
+              title={f.coverRemove}
+              onClick={() => setForm((s) => ({ ...s, cover_image: "" }))}
+            >
+              {f.coverRemove}
+            </Button>
+          </div>
+        ) : (
+          <input
+            id="ev-cover"
+            type="file"
+            accept={ALLOWED_COVER_TYPES.join(",")}
+            disabled={uploading}
+            onChange={onCoverFile}
+            className="w-full rounded-button border border-scheme-border bg-scheme-background px-3 py-2 text-medium file:mr-3 file:rounded-button file:border-0 file:bg-torea-bay file:px-3 file:py-1 file:text-small file:font-medium file:text-white"
+          />
+        )}
+        {uploading && (
+          <p className="text-small text-neutral-darkest/60">{f.coverUploading}</p>
+        )}
+        <p className="text-small text-neutral-darkest/60">{f.coverHint}</p>
       </div>
       <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
         <label className="flex items-center gap-2 text-medium">
@@ -142,7 +200,7 @@ function EventForm({ initial, categories, onDone, onCancel }) {
       </div>
       {err && <p className="text-small font-medium text-burnt-sienna-dark">{err}</p>}
       <div className="flex gap-3">
-        <Button type="submit" disabled={busy} title={f.save}>
+        <Button type="submit" disabled={busy || uploading} title={f.save}>
           {busy ? f.saving : f.save}
         </Button>
         <Button type="button" variant="secondary" onClick={onCancel} title={f.cancel}>
