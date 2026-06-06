@@ -8,19 +8,14 @@ Updated through: Phase 6 (LINE login).
 
 ---
 
-## 🔴 Phase 3 — Email (built, needs your config)
+## ✅ Phase 3 — Email (WORKING as of 2026-06-06)
 
-Full checklist: **`docs/PHASE3-EMAIL-CHECKLIST.md`**. Short version:
+Function deployed, secrets set, webhook live, tested end-to-end. One cosmetic step left:
 
-- [ ] Run `supabase/migrations/0004_email_log.sql` in the SQL editor.
-- [ ] Resend account → add domain `mail.btechjapan.com` → add the SPF/DKIM records
-      in Cloudflare DNS → wait for **Verified** → create an API key (`re_…`).
-      *(You can paste me the DNS records to double-check — they aren't secret.)*
-- [ ] Deploy the Edge Function `event-emails` (dashboard: paste
-      `supabase/functions/event-emails/index.ts`).
-- [ ] Set function secrets: `RESEND_API_KEY`, `EMAIL_FROM`, `SITE_URL`, `WEBHOOK_SECRET`.
-- [ ] Create a Database Webhook on `participations` (Insert + Update) → the function.
-- [ ] Test: join an event → confirmation email.
+- [ ] **Branded sender:** Resend → Domains → Add `mail.btechjapan.com` → add the
+      SPF/DKIM records in Cloudflare DNS (paste them to me to double-check) → once
+      **Verified**, change the `EMAIL_FROM` secret to `Acty <hello@mail.btechjapan.com>`.
+      Until then mail sends from `onboarding@resend.dev` (delivers fine, just unbranded).
 
 ---
 
@@ -28,7 +23,7 @@ Full checklist: **`docs/PHASE3-EMAIL-CHECKLIST.md`**. Short version:
 
 The dashboard is at **`/organizer`**. To use it:
 
-- [ ] **Grant yourself the organizer role** (one-time, SQL editor):
+- [x] **Grant yourself the organizer role** — DONE 2026-06-06 (verified: role=organizer):
   ```sql
   update profiles set role = 'organizer'
   where id = (select id from auth.users where email = 'YOUR-EMAIL');
@@ -48,10 +43,9 @@ Tiers (Free / Premium) + members-only event gating are built. A `/membership` pa
 shows the plans; members-only events show an upgrade prompt instead of the join button.
 **Charging is not wired** (you chose free-only for now) — Premium shows "coming soon".
 
-- [ ] Run `supabase/migrations/0005_membership_demo.sql` (marks サンライズヨガ as
-      members-only so you can see the gating).
-- [ ] To preview the premium experience, grant yourself the premium tier (SQL in that
-      migration's comments), then reload — the members-only event becomes joinable.
+- [x] Run `supabase/migrations/0005_membership_demo.sql` — DONE 2026-06-06
+      (サンライズヨガ is members-only).
+- [x] Premium tier granted — DONE 2026-06-06 (verified: tier=premium).
 - When you're ready to actually charge: pick a provider (see Phase 5 below) and I'll wire
   checkout + lock tier changes behind it.
 
