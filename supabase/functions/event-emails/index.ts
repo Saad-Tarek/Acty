@@ -11,8 +11,12 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!;
 const EMAIL_FROM = Deno.env.get("EMAIL_FROM") ?? "Acty <onboarding@resend.dev>";
+const REPLY_TO = Deno.env.get("REPLY_TO"); // optional: where replies should land
 const SITE_URL = Deno.env.get("SITE_URL") ?? "https://acty.btechjapan.com";
 const WEBHOOK_SECRET = Deno.env.get("WEBHOOK_SECRET");
+// Optional: LINE Messaging API channel access token. When set, users who signed
+// in with LINE get a push message in the LINE app instead of an email.
+const LINE_MESSAGING_TOKEN = Deno.env.get("LINE_MESSAGING_TOKEN");
 
 const ok = () => new Response("ok", { status: 200 });
 
@@ -71,7 +75,7 @@ function render(kind: string, name: string, event: any) {
     <tr><td style="padding:14px 16px;font-size:14px;line-height:1.9">
       <strong>${event.title}</strong><br/>📅 ${when}<br/>📍 ${event.location ?? ""}
     </td></tr></table>`;
-  const eventUrl = `${SITE_URL}/events/${event.slug}`;
+  const eventUrl = `${SITE_URL}/event?slug=${event.slug}`;
   const accountUrl = `${SITE_URL}/account`;
 
   switch (kind) {
@@ -116,6 +120,18 @@ function render(kind: string, name: string, event: any) {
   }
 }
 
+function lineText(kind: string, event: any): string {
+  const when = whenLabel(event.starts_at);
+  const url = `${SITE_URL}/event?slug=${event.slug}`;
+  const texts: Record<string, string> = {
+    confirmed: `【Acty】${event.title} の参加が確定しました🎉\n📅 ${when}\n📍 ${event.location ?? ""}\n${url}`,
+    waitlisted: `【Acty】${event.title} は満席のため、キャンセル待ちに登録しました。空きが出ると自動で繰り上がります。\n${url}`,
+    promoted: `【Acty】${event.title} に繰り上がりで参加が確定しました🎉\n📅 ${when}\n${url}`,
+    cancelled: `【Acty】${event.title} の参加をキャンセルしました。またのご参加をお待ちしています。\n${url}`,
+  };
+  return texts[kind] ?? `【Acty】${event.title}\n${url}`;
+}
+
 Deno.serve(async (req) => {
   if (WEBHOOK_SECRET && req.headers.get("x-webhook-secret") !== WEBHOOK_SECRET) {
     return new Response("unauthorized", { status: 401 });
@@ -148,12 +164,7 @@ Deno.serve(async (req) => {
   const { data: userRes } = await supa.auth.admin.getUserById(record.user_id);
   const email = userRes?.user?.email;
   if (!email) return ok();
-  // LINE-only accounts get a synthesized placeholder address that can't receive
-  // mail — skip instead of bouncing (protects sender reputation).
-  if (email.endsWith("@line.users.acty")) {
-    console.log("skip email: LINE-only user", record.user_id);
-    return ok();
-  }
+  const lineSub = userRes.user.user_metadata?.line_sub;
   const name =
     userRes.user.user_metadata?.name ||
     userRes.user.user_metadata?.full_name ||
@@ -166,33 +177,62 @@ Deno.serve(async (req) => {
     .single();
   if (!event) return ok();
 
-  const tpl = render(kind, name, event);
-  if (!tpl) return ok();
-
   let sent = false;
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${RESEND_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: EMAIL_FROM,
-        to: email,
-        subject: tpl.subject,
-        html: tpl.html,
-      }),
-    });
-    sent = res.ok;
-    if (!res.ok) console.error("resend error", res.status, await res.text());
-  } catch (e) {
-    console.error("resend exception", e);
+  let recipient = email;
+
+  if (lineSub && LINE_MESSAGING_TOKEN) {
+    // LINE user + Messaging API configured → push inside the LINE app.
+    // (Requires the user to have added the Acty official account as a friend.)
+    recipient = `line:${lineSub}`;
+    try {
+      const res = await fetch("https://api.line.me/v2/bot/message/push", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LINE_MESSAGING_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: lineSub,
+          messages: [{ type: "text", text: lineText(kind, event) }],
+        }),
+      });
+      sent = res.ok;
+      if (!res.ok) console.error("line push error", res.status, await res.text());
+    } catch (e) {
+      console.error("line push exception", e);
+    }
+  } else if (email.endsWith("@line.users.acty")) {
+    // LINE-only account but Messaging API not configured — nothing deliverable.
+    console.log("skip: LINE-only user, messaging not configured", record.user_id);
+    return ok();
+  } else {
+    const tpl = render(kind, name, event);
+    if (!tpl) return ok();
+    try {
+      const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${RESEND_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: EMAIL_FROM,
+          to: email,
+          subject: tpl.subject,
+          html: tpl.html,
+          ...(REPLY_TO ? { reply_to: REPLY_TO } : {}),
+        }),
+      });
+      sent = res.ok;
+      if (!res.ok) console.error("resend error", res.status, await res.text());
+    } catch (e) {
+      console.error("resend exception", e);
+    }
   }
 
   await supa
     .from("email_log")
-    .insert({ participation_id: record.id, kind, recipient: email, ok: sent });
+    .insert({ participation_id: record.id, kind, recipient, ok: sent });
 
   return ok();
 });

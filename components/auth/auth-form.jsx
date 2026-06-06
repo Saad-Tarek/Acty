@@ -105,7 +105,8 @@ export function AuthForm({ mode = "signin" }) {
       `&client_id=${LINE_CHANNEL_ID}` +
       `&redirect_uri=${encodeURIComponent(redirectUri)}` +
       `&state=${state}` +
-      `&scope=${encodeURIComponent("profile openid")}`;
+      `&scope=${encodeURIComponent("profile openid")}` +
+      "&bot_prompt=normal";
   };
 
   if (status === "sent") {

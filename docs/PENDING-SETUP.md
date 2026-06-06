@@ -66,6 +66,31 @@ is hidden until you set the channel ID. Full runbook: `supabase/functions/line-a
 
 ---
 
+## 🟤 LINE notifications in the LINE app (code ready, needs your config)
+
+The notification function now pushes to LINE users when configured. Your steps:
+
+- [ ] LINE Developers console → **same provider as the login channel** → create a
+      **Messaging API channel** (this creates your Acty official account).
+- [ ] In that channel → Messaging API tab → **issue a Channel access token (long-lived)**.
+- [ ] Supabase → Edge Functions → `event-emails` → Secrets → add
+      `LINE_MESSAGING_TOKEN = <that token>`, then **re-paste & redeploy** the updated
+      `supabase/functions/event-emails/index.ts`.
+- [ ] **Add the Acty official account as a friend** with your LINE account
+      (new logins are prompted automatically via `bot_prompt`).
+- [ ] Test: with the LINE account, join an event → push message in the LINE app.
+- Free plan ≈ 200 push messages/month; paid beyond that.
+
+## 📨 Inquiry mail (receive email at btechjapan.com) — free via Cloudflare
+
+- [ ] Cloudflare → btechjapan.com → **Email → Email Routing** → enable (auto-adds MX).
+- [ ] Add destination `saad.elmisery@gmail.com` → click the confirmation mail.
+- [ ] Create custom addresses → `hello@btechjapan.com` (and `careers@…` if you like)
+      → forward to your Gmail.
+- [ ] Tell me the final address — I'll point all the site's contact links at it
+      (replacing the placeholder `hello@acty.jp`) and set `REPLY_TO` on event emails
+      so replies land in your inbox.
+
 ## ⚪ Earlier / optional
 
 - [ ] **Google sign-in** (Phase 1, optional): Authentication → Providers → Google →
