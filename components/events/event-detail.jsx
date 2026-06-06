@@ -8,6 +8,7 @@ import { getEvent } from "@/lib/supabase/events";
 import { eventDateParts } from "@/lib/format";
 import { JoinWidget } from "@/components/events/join-widget";
 import { useLocale } from "@/lib/i18n/locale-provider";
+import { localized } from "@/lib/i18n/content";
 
 export function EventDetail({ slug }) {
   const { t, locale } = useLocale();
@@ -25,8 +26,9 @@ export function EventDetail({ slug }) {
   }, [slug]);
 
   useEffect(() => {
-    if (event?.title) document.title = `${event.title} — Acty`;
-  }, [event]);
+    const title = localized(event, "title", locale);
+    if (title) document.title = `${title} — Acty`;
+  }, [event, locale]);
 
   if (event === undefined) {
     return (
@@ -51,6 +53,9 @@ export function EventDetail({ slug }) {
   }
 
   const d = eventDateParts(event.starts_at, locale);
+  const title = localized(event, "title", locale);
+  const category = localized(event, "category_name", locale);
+  const description = localized(event, "description", locale);
 
   return (
     <section className="px-[5%] py-16 md:py-24 lg:py-28 scheme-1">
@@ -67,24 +72,24 @@ export function EventDetail({ slug }) {
           <div className="img-zoom w-full rounded-image">
             <img
               src={event.cover_image}
-              alt={event.title}
+              alt={title}
               className="aspect-[4/3] w-full rounded-image object-cover"
               fetchPriority="high"
             />
           </div>
 
           <div className="flex flex-col">
-            {event.category_name && (
-              <Badge className="mb-4 self-start">{event.category_name}</Badge>
+            {category && (
+              <Badge className="mb-4 self-start">{category}</Badge>
             )}
-            <h1 className="text-h2 font-bold">{event.title}</h1>
+            <h1 className="text-h2 font-bold">{title}</h1>
             <dl className="mt-5 grid grid-cols-[max-content_1fr] gap-x-6 gap-y-2 text-medium md:mt-6">
               <dt className="text-neutral-darkest/60">{s.dateLabel}</dt>
               <dd className="font-semibold">
                 {d.full} {d.time}
               </dd>
               <dt className="text-neutral-darkest/60">{s.placeLabel}</dt>
-              <dd>{event.location}</dd>
+              <dd>{localized(event, "location", locale)}</dd>
               <dt className="text-neutral-darkest/60">{s.priceLabel}</dt>
               <dd>{event.price > 0 ? `¥${event.price.toLocaleString()}` : s.free}</dd>
             </dl>
@@ -95,11 +100,11 @@ export function EventDetail({ slug }) {
           </div>
         </div>
 
-        {event.description && (
+        {description && (
           <div className="mt-12 max-w-2xl md:mt-16">
             <h2 className="mb-4 text-h4 font-bold">{s.aboutTitle}</h2>
             <p className="leading-[1.8] whitespace-pre-line">
-              {event.description}
+              {description}
             </p>
           </div>
         )}

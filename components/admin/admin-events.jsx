@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useLocale } from "@/lib/i18n/locale-provider";
 import { eventDateParts } from "@/lib/format";
+import { localized } from "@/lib/i18n/content";
 import { setEventStatus } from "@/lib/supabase/organizer";
 import { listAllEvents } from "@/lib/supabase/admin";
 
@@ -41,13 +42,13 @@ export function AdminEvents() {
           <li key={ev.id} className="flex flex-wrap items-start justify-between gap-3 py-5">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <p className="font-semibold">{ev.title}</p>
+                <p className="font-semibold">{localized(ev, "title", locale)}</p>
                 <Badge className="shrink-0">{statusLabel(ev.status)}</Badge>
                 {ev.members_only && <Badge className="shrink-0">{a.membersOnly}</Badge>}
               </div>
               <p className="mt-1 text-small text-neutral-darkest/70">
                 {d.full} {d.time}
-                {ev.location ? ` ・ ${ev.location}` : ""}
+                {localized(ev, "location", locale) ? ` ・ ${localized(ev, "location", locale)}` : ""}
                 {" ・ "}
                 {a.organizer}: {ev.organizer?.display_name || "—"}
               </p>

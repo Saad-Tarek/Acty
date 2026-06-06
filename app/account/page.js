@@ -11,6 +11,7 @@ import { listMyEvents } from "@/lib/supabase/events";
 import { getMyProfile } from "@/lib/supabase/organizer";
 import { getMyTierSlug } from "@/lib/supabase/membership";
 import { eventDateParts } from "@/lib/format";
+import { localized } from "@/lib/i18n/content";
 
 function MyEvents({ enabled }) {
   const { t, locale } = useLocale();
@@ -63,10 +64,10 @@ function MyEvents({ enabled }) {
             />
             <div className="grow">
               <Link href={`/event?slug=${p.event.slug}`}>
-                <p className="font-semibold">{p.event.title}</p>
+                <p className="font-semibold">{localized(p.event, "title", locale)}</p>
               </Link>
               <p className="text-small text-neutral-darkest/70">
-                {d.full} {d.time} ・ {p.event.location}
+                {d.full} {d.time} ・ {localized(p.event, "location", locale)}
               </p>
             </div>
             {p.status === "confirmed" ? (

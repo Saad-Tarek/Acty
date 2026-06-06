@@ -7,9 +7,10 @@ import { getMyProfile } from "@/lib/supabase/organizer";
 import { getAdminStats } from "@/lib/supabase/admin";
 import { AdminMembers } from "@/components/admin/admin-members";
 import { AdminEvents } from "@/components/admin/admin-events";
+import { AdminCategories } from "@/components/admin/admin-categories";
 import { AdminActivity } from "@/components/admin/admin-activity";
 
-const TABS = ["overview", "members", "events", "activity"];
+const TABS = ["overview", "members", "events", "categories", "activity"];
 
 function KpiCard({ label, value, sub }) {
   return (
@@ -175,6 +176,7 @@ export function AdminDashboard() {
           {tab === "overview" && <Overview />}
           {tab === "members" && <AdminMembers />}
           {tab === "events" && <AdminEvents />}
+          {tab === "categories" && <AdminCategories />}
           {tab === "activity" && <AdminActivity />}
         </div>
       </div>

@@ -1,0 +1,203 @@
+"use client";
+
+import React from "react";
+import { LegalPage } from "@/components/legal/legal-page";
+import { useLocale } from "@/lib/i18n/locale-provider";
+
+function TermsJa() {
+  return (
+    <LegalPage
+      title="利用規約"
+      updated="2026年6月4日"
+      lead="この利用規約（以下「本規約」）は、Acty（以下「当社」）が提供するウェルネスイベント・コミュニティプラットフォーム（以下「本サービス」）の利用条件を定めるものです。ご利用前に必ずお読みください。"
+    >
+      <h2>第1条（適用）</h2>
+      <p>
+        本規約は、本サービスの提供条件および当社と利用者との間の権利義務関係を定めるものであり、利用者と当社との間の本サービスの利用に関わる一切の関係に適用されます。利用者は、本サービスを利用することにより、本規約に同意したものとみなされます。
+      </p>
+
+      <h2>第2条（利用登録）</h2>
+      <ol>
+        <li>
+          利用希望者は、当社の定める方法により利用登録を申請し、当社がこれを承認することで利用登録が完了します。
+        </li>
+        <li>
+          当社は、登録申請者に次の事由があると判断した場合、登録を承認しないことがあります。
+          <ul>
+            <li>虚偽の事項を届け出た場合</li>
+            <li>過去に本規約に違反したことがある場合</li>
+            <li>その他、当社が利用登録を適当でないと判断した場合</li>
+          </ul>
+        </li>
+      </ol>
+
+      <h2>第3条（アカウントの管理）</h2>
+      <p>
+        利用者は、自己の責任において本サービスのアカウントを管理するものとします。アカウントの管理不十分、第三者の使用等によって生じた損害の責任は利用者が負い、当社は一切の責任を負いません。
+      </p>
+
+      <h2>第4条（イベントへの参加とキャンセル）</h2>
+      <ol>
+        <li>
+          利用者は、本サービスを通じてイベントへの参加を申し込むことができます。参加枠には定員があり、定員に達した場合はキャンセル待ちとして登録されることがあります。
+        </li>
+        <li>
+          参加のキャンセルは、各イベントに定められた期限（原則として開始の24時間前）までに、アカウントページから行うものとします。期限を過ぎたキャンセルや無断不参加が繰り返された場合、当社は利用を制限することがあります。
+        </li>
+        <li>
+          イベントは、天候・主催者の都合・参加人数等により変更または中止される場合があります。その場合は、登録されたメールアドレス宛にご連絡します。
+        </li>
+      </ol>
+
+      <h2>第5条（禁止事項）</h2>
+      <p>利用者は、本サービスの利用にあたり、次の行為をしてはなりません。</p>
+      <ul>
+        <li>法令または公序良俗に違反する行為</li>
+        <li>犯罪行為に関連する行為</li>
+        <li>他の利用者、第三者または当社の権利・利益を侵害する行為</li>
+        <li>本サービスの運営を妨害する行為や、不正アクセスを試みる行為</li>
+        <li>他の利用者に関する個人情報等を無断で収集・蓄積する行為</li>
+        <li>本サービスを商業目的で無断利用する行為</li>
+        <li>その他、当社が不適切と判断する行為</li>
+      </ul>
+
+      <h2>第6条（本サービスの提供の停止等）</h2>
+      <p>
+        当社は、システムの保守点検、天災、通信回線の障害その他やむを得ない事由が生じた場合、利用者に事前に通知することなく本サービスの全部または一部の提供を停止または中断できるものとします。これによって利用者に生じた損害について、当社は責任を負いません。
+      </p>
+
+      <h2>第7条（免責事項）</h2>
+      <ol>
+        <li>
+          利用者は、自身の健康状態を十分に確認したうえでイベントに参加するものとします。イベント参加中の事故・けが・体調不良等について、当社は故意または重過失がある場合を除き責任を負いません。
+        </li>
+        <li>
+          当社は、本サービスに事実上または法律上の瑕疵がないことを明示的にも黙示的にも保証するものではありません。
+        </li>
+      </ol>
+
+      <h2>第8条（サービス内容の変更等）</h2>
+      <p>
+        当社は、利用者への事前の告知をもって、本サービスの内容を変更または提供を終了することができます。
+      </p>
+
+      <h2>第9条（利用規約の変更）</h2>
+      <p>
+        当社は、必要と判断した場合には、利用者に通知することなくいつでも本規約を変更できるものとします。変更後の本規約は、本サービス上に掲示した時点から効力を生じます。
+      </p>
+
+      <h2>第10条（準拠法・裁判管轄）</h2>
+      <p>
+        本規約の解釈にあたっては日本法を準拠法とします。本サービスに関して紛争が生じた場合には、当社の本店所在地を管轄する裁判所を専属的合意管轄とします。
+      </p>
+
+      <h2>お問い合わせ</h2>
+      <p>
+        本規約に関するお問い合わせは、
+        <a href="mailto:hello@acty.jp">hello@acty.jp</a>{" "}
+        までご連絡ください。
+      </p>
+    </LegalPage>
+  );
+}
+
+function TermsEn() {
+  return (
+    <LegalPage
+      title="Terms of Service"
+      updated="June 4, 2026"
+      lead='These Terms of Service (the "Terms") set out the conditions for using the wellness event and community platform (the "Service") provided by Acty (the "Company"). Please read them carefully before using the Service.'
+    >
+      <h2>Article 1 (Scope)</h2>
+      <p>
+        These Terms define the conditions for providing the Service and the rights and obligations between the Company and users, and apply to all relationships between users and the Company concerning use of the Service. By using the Service, users are deemed to have agreed to these Terms.
+      </p>
+
+      <h2>Article 2 (Registration)</h2>
+      <ol>
+        <li>
+          Those who wish to use the Service shall apply for registration by the method prescribed by the Company; registration is completed when the Company approves the application.
+        </li>
+        <li>
+          The Company may decline an application if it determines that the applicant:
+          <ul>
+            <li>has provided false information;</li>
+            <li>has previously violated these Terms; or</li>
+            <li>is otherwise unsuitable for registration in the Company's judgment.</li>
+          </ul>
+        </li>
+      </ol>
+
+      <h2>Article 3 (Account Management)</h2>
+      <p>
+        Users shall manage their Service account at their own responsibility. Users bear responsibility for any damage caused by insufficient management of their account or use by third parties, and the Company assumes no liability for such damage.
+      </p>
+
+      <h2>Article 4 (Joining and Cancelling Events)</h2>
+      <ol>
+        <li>
+          Users may apply to join events through the Service. Events have limited capacity; once full, users may be placed on a waiting list.
+        </li>
+        <li>
+          Cancellations must be made from the account page by the deadline set for each event (in principle, 24 hours before the start time). Repeated late cancellations or no-shows may result in restricted use of the Service.
+        </li>
+        <li>
+          Events may be changed or cancelled due to weather, organizer circumstances, the number of participants, or similar reasons. In such cases, we will contact you at your registered email address.
+        </li>
+      </ol>
+
+      <h2>Article 5 (Prohibited Conduct)</h2>
+      <p>When using the Service, users must not engage in any of the following:</p>
+      <ul>
+        <li>Acts that violate laws or public order and morals</li>
+        <li>Acts related to criminal activity</li>
+        <li>Acts that infringe the rights or interests of other users, third parties, or the Company</li>
+        <li>Acts that interfere with the operation of the Service, or attempts at unauthorized access</li>
+        <li>Collecting or storing personal information about other users without permission</li>
+        <li>Using the Service for commercial purposes without authorization</li>
+        <li>Any other conduct the Company deems inappropriate</li>
+      </ul>
+
+      <h2>Article 6 (Suspension of the Service)</h2>
+      <p>
+        The Company may suspend or interrupt all or part of the Service without prior notice to users in the event of system maintenance, natural disasters, communication line failures, or other unavoidable circumstances. The Company is not liable for any damage suffered by users as a result.
+      </p>
+
+      <h2>Article 7 (Disclaimer)</h2>
+      <ol>
+        <li>
+          Users shall participate in events only after carefully assessing their own state of health. Except in cases of intent or gross negligence, the Company is not liable for accidents, injuries, or illness occurring during event participation.
+        </li>
+        <li>
+          The Company makes no warranty, express or implied, that the Service is free from defects in fact or in law.
+        </li>
+      </ol>
+
+      <h2>Article 8 (Changes to the Service)</h2>
+      <p>
+        The Company may change the content of the Service or terminate its provision upon prior notice to users.
+      </p>
+
+      <h2>Article 9 (Changes to these Terms)</h2>
+      <p>
+        The Company may amend these Terms at any time without notifying users when it deems necessary. The amended Terms take effect when posted on the Service.
+      </p>
+
+      <h2>Article 10 (Governing Law and Jurisdiction)</h2>
+      <p>
+        These Terms are governed by the laws of Japan. Any dispute arising in connection with the Service shall be subject to the exclusive jurisdiction of the court having jurisdiction over the location of the Company's head office.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        For inquiries about these Terms, please contact{" "}
+        <a href="mailto:hello@acty.jp">hello@acty.jp</a>.
+      </p>
+    </LegalPage>
+  );
+}
+
+export function TermsContent() {
+  const { locale } = useLocale();
+  return locale === "en" ? <TermsEn /> : <TermsJa />;
+}

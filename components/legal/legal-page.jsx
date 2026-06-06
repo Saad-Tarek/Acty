@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import { useLocale } from "@/lib/i18n/locale-provider";
 
 /**
  * Shared shell for long-form legal / policy pages: a title, an optional
@@ -6,6 +9,7 @@ import React from "react";
  * @param {{ title: string, updated?: string, lead?: string, children: React.ReactNode }} props
  */
 export function LegalPage({ title, updated, lead, children }) {
+  const { locale } = useLocale();
   return (
     <article className="px-[5%] py-16 md:py-24 lg:py-28 scheme-1">
       <div className="container max-w-3xl">
@@ -14,7 +18,7 @@ export function LegalPage({ title, updated, lead, children }) {
           {lead && <p className="mt-4 text-medium">{lead}</p>}
           {updated && (
             <p className="mt-4 text-small text-neutral-darkest/60">
-              最終更新日: {updated}
+              {locale === "en" ? "Last updated:" : "最終更新日:"} {updated}
             </p>
           )}
         </header>

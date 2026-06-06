@@ -9,20 +9,23 @@ import { ChevronRight } from "relume-icons";
 import { listEvents } from "@/lib/supabase/events";
 import { eventDateParts, seatsLabel } from "@/lib/format";
 import { useLocale } from "@/lib/i18n/locale-provider";
+import { localized } from "@/lib/i18n/content";
 
 function EventCard({ ev }) {
   const { t, locale } = useLocale();
   const d = eventDateParts(ev.starts_at, locale);
+  const title = localized(ev, "title", locale);
+  const category = localized(ev, "category_name", locale);
   return (
     <div className="flex flex-col items-start">
       <Link
         href={`/event?slug=${ev.slug}`}
         className="img-zoom relative mb-5 block aspect-[3/2] w-full rounded-image md:mb-6"
-        aria-label={ev.title}
+        aria-label={title}
       >
         <img
           src={ev.cover_image}
-          alt={ev.title}
+          alt={title}
           className="absolute size-full rounded-image object-cover"
           loading="lazy"
           decoding="async"
@@ -33,11 +36,11 @@ function EventCard({ ev }) {
           <span>{d.month}</span>
         </div>
       </Link>
-      {ev.category_name && <Badge className="mb-3 md:mb-4">{ev.category_name}</Badge>}
+      {category && <Badge className="mb-3 md:mb-4">{category}</Badge>}
       <Link href={`/event?slug=${ev.slug}`}>
-        <h3 className="text-h5 font-bold">{ev.title}</h3>
+        <h3 className="text-h5 font-bold">{title}</h3>
       </Link>
-      <p className="mb-2">{ev.location}</p>
+      <p className="mb-2">{localized(ev, "location", locale)}</p>
       <p className="text-small text-neutral-darkest/70">
         {seatsLabel(ev, t.eventsPage.seats)}
       </p>

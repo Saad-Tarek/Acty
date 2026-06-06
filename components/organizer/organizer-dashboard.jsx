@@ -39,13 +39,16 @@ function localInputToIso(value) {
 }
 
 function EventForm({ initial, categories, onDone, onCancel }) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const f = t.organizer.form;
   const [form, setForm] = useState({
     title: initial?.title ?? "",
+    title_en: initial?.title_en ?? "",
     category_id: initial?.category_id ?? "",
     description: initial?.description ?? "",
+    description_en: initial?.description_en ?? "",
     location: initial?.location ?? "",
+    location_en: initial?.location_en ?? "",
     start: isoToLocalInput(initial?.starts_at),
     end: isoToLocalInput(initial?.ends_at),
     capacity: initial?.capacity ?? "",
@@ -121,7 +124,9 @@ function EventForm({ initial, categories, onDone, onCancel }) {
           <select id="ev-cat" className={FIELD} value={form.category_id} onChange={set("category_id")}>
             <option value="">{f.noCategory}</option>
             {categories.map((c) => (
-              <option key={c.id} value={c.id}>{c.name}</option>
+              <option key={c.id} value={c.id}>
+                {locale === "en" && c.name_en ? c.name_en : c.name}
+              </option>
             ))}
           </select>
         </div>
@@ -134,6 +139,24 @@ function EventForm({ initial, categories, onDone, onCancel }) {
         <Label htmlFor="ev-desc">{f.description}</Label>
         <textarea id="ev-desc" rows={4} className={FIELD} value={form.description} onChange={set("description")} />
       </div>
+      <details className="rounded-card border border-scheme-border p-4" open={Boolean(form.title_en || form.description_en || form.location_en)}>
+        <summary className="cursor-pointer text-medium font-medium">{f.enSection}</summary>
+        <p className="mt-1 text-small text-neutral-darkest/60">{f.enHint}</p>
+        <div className="mt-4 grid gap-4">
+          <div className="grid gap-2">
+            <Label htmlFor="ev-title-en">{f.titleEn}</Label>
+            <Input id="ev-title-en" value={form.title_en} onChange={set("title_en")} />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="ev-loc-en">{f.locationEn}</Label>
+            <Input id="ev-loc-en" value={form.location_en} onChange={set("location_en")} />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="ev-desc-en">{f.descriptionEn}</Label>
+            <textarea id="ev-desc-en" rows={4} className={FIELD} value={form.description_en} onChange={set("description_en")} />
+          </div>
+        </div>
+      </details>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="grid gap-2">
           <Label htmlFor="ev-start">{f.start}</Label>

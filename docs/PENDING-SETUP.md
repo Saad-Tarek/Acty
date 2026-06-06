@@ -103,6 +103,25 @@ gone; old events with URLs keep working). To activate:
       objects", create the same policies in Dashboard → Storage → Policies instead.
 - [ ] Test: `/organizer` → edit an event → choose a file → preview appears → save.
 
+## 🌐 Phase 9 — Full English localization + category management (built, needs your SQL)
+
+EN mode no longer leaks Japanese: events/categories now have English columns, the
+legal pages (terms/privacy/cookies) are fully translated, team names romanize, and
+dead JA-only components were removed. Organizers get optional English fields on the
+event form; admins get a **Categories** tab in `/admin` (add / rename / delete,
+both languages). To activate the data side:
+
+- [ ] Run `supabase/migrations/0008_localization.sql` in the SQL editor
+      (adds `name_en` to categories + `title_en`/`description_en`/`location_en`
+      to events, translates the 6 seed events & 4 categories, rebuilds the
+      `event_summaries` view).
+- [ ] Test: switch the site to EN → events list/detail, my events, legal pages
+      should all be English. `/admin` → カテゴリー tab → add a category.
+
+Note: anything still Japanese in EN mode after this = an event without English
+fields filled in (falls back to JA by design — edit the event and fill the
+"English version" section).
+
 ## 📨 Inquiry mail (receive email at btechjapan.com) — free via Cloudflare
 
 - [ ] Cloudflare → btechjapan.com → **Email → Email Routing** → enable (auto-adds MX).
