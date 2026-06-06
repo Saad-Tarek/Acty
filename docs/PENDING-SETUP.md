@@ -72,6 +72,26 @@ Messaging API channel + token configured, function redeployed, tested: join/canc
 sends a push message in the LINE app for LINE-login users. Email users keep getting
 branded emails. (Free plan ≈ 200 pushes/month — watch usage as the community grows.)
 
+## 🛡️ Phase 7 — Admin layer & dashboard (built, needs your SQL)
+
+Three access levels are now real: **member → organizer → admin**. The admin
+dashboard is at **`/admin`** (Overview KPIs + 30-day trends / Members with
+role & premium management / all Events / Activity feed). To activate:
+
+- [ ] Run `supabase/migrations/0006_admin.sql` in the SQL editor. This also
+      **fixes a security hole** (users could previously change their own
+      role/tier from the browser console), so run it even before using `/admin`.
+- [ ] Make yourself admin (SQL editor):
+  ```sql
+  update profiles set role = 'admin'
+  where id = (select id from auth.users where email = 'YOUR-EMAIL');
+  ```
+- [ ] Reload `/account` → an "管理ダッシュボード" card appears → open `/admin`.
+
+Notes: admins can do everything organizers can (`/organizer` works too);
+the last remaining admin can't be demoted; role/tier changes by non-admins
+are blocked at the database level.
+
 ## 📨 Inquiry mail (receive email at btechjapan.com) — free via Cloudflare
 
 - [ ] Cloudflare → btechjapan.com → **Email → Email Routing** → enable (auto-adds MX).

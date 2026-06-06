@@ -90,7 +90,7 @@ export default function Page() {
   const { user, loading, configured, signOut } = useAuth();
   const { t } = useLocale();
   const a = t.account;
-  const [isOrganizer, setIsOrganizer] = useState(false);
+  const [role, setRole] = useState("member");
   const [tier, setTier] = useState("free");
 
   useEffect(() => {
@@ -101,7 +101,7 @@ export default function Page() {
     if (!user) return;
     let active = true;
     getMyProfile()
-      .then((p) => active && setIsOrganizer(p?.role === "organizer" || p?.role === "admin"))
+      .then((p) => active && setRole(p?.role || "member"))
       .catch(() => {});
     getMyTierSlug()
       .then((s) => active && setTier(s || "free"))
@@ -164,11 +164,20 @@ export default function Page() {
           <MyEvents enabled={Boolean(user)} />
         </div>
 
-        {isOrganizer && (
+        {(role === "organizer" || role === "admin") && (
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-card border border-scheme-border p-6 md:p-8">
             <p className="text-h5 font-bold">{t.organizer.title}</p>
             <Button title={t.organizer.title} asChild>
               <Link href="/organizer">{t.organizer.createBtn}</Link>
+            </Button>
+          </div>
+        )}
+
+        {role === "admin" && (
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-card border border-scheme-border p-6 md:p-8">
+            <p className="text-h5 font-bold">{t.admin.title}</p>
+            <Button title={t.admin.title} asChild>
+              <Link href="/admin">{t.admin.open}</Link>
             </Button>
           </div>
         )}
