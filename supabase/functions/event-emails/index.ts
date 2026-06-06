@@ -148,6 +148,12 @@ Deno.serve(async (req) => {
   const { data: userRes } = await supa.auth.admin.getUserById(record.user_id);
   const email = userRes?.user?.email;
   if (!email) return ok();
+  // LINE-only accounts get a synthesized placeholder address that can't receive
+  // mail — skip instead of bouncing (protects sender reputation).
+  if (email.endsWith("@line.users.acty")) {
+    console.log("skip email: LINE-only user", record.user_id);
+    return ok();
+  }
   const name =
     userRes.user.user_metadata?.name ||
     userRes.user.user_metadata?.full_name ||
